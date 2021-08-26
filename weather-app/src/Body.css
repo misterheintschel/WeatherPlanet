@@ -1,36 +1,108 @@
 .Body {
   display:flex;
-  position:fixed;
+  justify-content: flex-start;
   width:100%;
-  height:100%;
-  justify-content: flex-end;
-  background-image:linear-gradient(white 35%, blue);
+  min-height:100vh;
+  flex-direction:column;
+  background-image:linear-gradient(black 10%, blue);
+}
+
+.CurrentLocation{
+  margin:2rem;
+}
+
+.CurrentLocation h3{
+  font-size:1.4em;
+  color:white;
+  text-shadow:
+   -1px -1px 0 blue,
+    1px -1px 0 blue,
+    -1px 1px 0 blue,
+     1px 1px 0 blue;
+
 }
 
 .Search {
-  width:20%;
-  height:10%;
+  width:25%;
+  height:6%;
   margin:1%;
   display:flex;
   padding:5px;
-  height:4%;
-
+  align-self:flex-end;
 }
 
 .Search input{
   padding:3%;
+  color:white;
   margin-right:1em;
   width:auto;
   box-shadow:rgba(0, 0, 0, 0.8) 0 0 .5em;
   border-radius:2em;
+  background-image:linear-gradient(black 1%,blue);
 }
 
 .Search button{
-  width:auto;
-  color:blue;
-  border-radius:2.5em;
+  padding:0px;
+  color:white;
+  width:10rem;
+  min-height:2rem;
+  background-image:linear-gradient(black 1%,blue);
+  box-shadow:rgba(0, 0, 0, 0.8) 0 0 .5em;
+  border-radius:2em;
 }
 
-.Search:hover button{
+.Search button:hover{
   cursor:pointer;
+  border-color:lime;
+  border-width:thick;
+
+}
+
+.Search button:active{
+  background-color:green;
+  color:white;
+}
+
+.CardContainer{
+  width:40%;
+}
+
+.WeatherCard{
+  display:flex;
+  margin:1.8rem;
+  width:100%;
+  padding: 1rem;
+  color:white;
+  text-shadow:0 0 .2rem white;
+}
+
+.WeatherCard .Card{
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  width: 100%;
+  flex-direction: column;
+  /* #1 */
+  border: 5px solid hsl(0, 0%, 40%);
+
+  /* #2 */
+  padding: 2rem;
+  background: hsl(0, 0%, 20%);
+
+  /* #3 */
+  outline: 5px solid hsl(0, 0%, 60%);
+
+  /* #4 AND INFINITY!!! (CSS3 only) */
+  /*box-shadow:
+      0 0 0 10px hsl(0, 0%, 80%),
+      0 0 0 15px hsl(0, 0%, 90%);*/
+}
+
+.WeatherCard .Card .Values ul{
+  list-style: none;
+  font-size:1.3rem;
+}
+.WeatherCard .Card img{
+  object-fit: cover;
+
 }

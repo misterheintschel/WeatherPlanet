@@ -21,7 +21,6 @@ function Header() {
       </div>
       <div className="title">
         <h1>Weather Information</h1>
-        <p>Current Location: {loc()}</p>
       </div>
       <div className="login-button">
         <button><h2>Login</h2></button>

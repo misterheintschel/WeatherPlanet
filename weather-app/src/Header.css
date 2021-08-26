@@ -1,10 +1,11 @@
 .Header {
   overflow:hidden;
   color:white;
-  background-image:radial-gradient(blue,white);
+  background-image:radial-gradient(blue,black);
   padding: 10px 10px;
   display:flex;
   justify-content: space-between;
+  align-items: center;
   box-shadow: outset 0 10px 10px black;
 }
 
@@ -20,6 +21,7 @@
 }
 
 .title {
+  margin-top:1%;
   color:white;
   display:flex;
   flex-direction:column;
@@ -27,9 +29,10 @@
 }
 
 .title h1 {
+
   font-size:2.5em;
   color:white;
-  text-shadow:5px 5px 5px black;
+  text-shadow:4px 2px 5px white;
 }
 
 .title p{
@@ -41,8 +44,8 @@
 }
 
 .login-button{
-  margin-right:5%;
-  margin-top:2%;
+  margin-right:3%;
+  margin-top:1%;
   justify-content: center;
   align-items: center;
   color:white;
