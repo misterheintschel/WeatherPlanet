@@ -1,5 +1,6 @@
 .Header {
-  overflow:hidden;
+  position:sticky;
+  top:0;
   color:white;
   background-image:radial-gradient(blue,black);
   padding: 10px 10px;
