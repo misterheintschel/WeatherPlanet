@@ -1,41 +1,53 @@
 .Body {
   display:flex;
   width:100%;
-  background-image:linear-gradient(black 10%, blue);
   flex-direction:column;
+  justify-content:center;
+  background-image:linear-gradient(black,white,white)
 }
 
 .BodyTop{
   display:flex;
-  width:100%;
-  height:20%;
-  justify-content:flex-end;
+  flex-wrap:wrap;
+  justify-content: space-between;
 }
 
 .BodyBottom{
   display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
   justify-content: space-between;
+  margin-left:2vw;
+  margin-right:2vw;
 }
 
 .CurrentLocation{
-  margin:2rem;
+  display:flex;
+  margin:auto;
 }
 
 .CurrentLocation h3{
   font-size:1.4em;
   color:white;
-  text-shadow:
-   -1px -1px 0 blue,
-    1px -1px 0 blue,
-    -1px 1px 0 blue,
-     1px 1px 0 blue;
+}
 
+.CurrentLocation span{
+  font-style:italic;
+  text-shadow:
+   -1px -1px 0 gray,
+    1px -1px 0 gray,
+    -1px 1px 0 gray,
+     1px 1px 0 gray;
+}
+
+.hidden{
+  visibility: hidden;
 }
 
 .Search {
-  width:25%;
-  height:6%;
-  margin:1%;
+  width:auto;
+  height:auto;
+  margin:auto;
   display:flex;
   padding:5px;
 }
@@ -49,6 +61,7 @@
   border-radius:2em;
   background-image:linear-gradient(black 1%,blue);
 }
+
 .Search input:focus{
   background-image:repeating-linear-gradient(green,lime);
   color:black;
@@ -68,7 +81,6 @@
   cursor:pointer;
   border-color:lime;
   border-width:thick;
-
 }
 
 .Search button:active{
@@ -76,79 +88,312 @@
   color:black;
 }
 
-.Forecast{
-  display:flex;
-  width:35%;
-  margin:1.8rem;
-  padding: 1rem;
-  color:white;
-  text-shadow:0 0 .2rem white;
-}
-.Forecast .List{
-  display:flex;
-  flex-direction:column;
-  width:100%;
-}
-
-.Forecast .Card{
-  display:flex;
-  height:auto;
-  width:100%;
-  margin-top:3rem;
-  justify-content: center;
-  align-items: center;
-  overflow:hidden;
-  position:relative;
-  flex-direction: column;
-  /* #1 */
-  border: 5px solid hsl(0, 0%, 40%);
-  border-radius:5%;
-  /* #2 */
-  padding: 2rem;
-  background:transparent;
-
-  /* #3 */
-  outline: 5px solid hsl(0, 0%, 60%);
-
-  /* #4 AND INFINITY!!! (CSS3 only) */
-  /*box-shadow:
-      0 0 0 10px hsl(0, 0%, 80%),
-      0 0 0 15px hsl(0, 0%, 90%);*/
-}
-
-.Forecast .Card .Values ul{
-  list-style: none;
-  font-size:1.3rem;
-  position:absolute;
-}
-.Forecast .Card img{
-  
-
+#City{
+  font-size:10vh;
+  text-shadow: 1px 1px 1px #919191,
+        1px 2px 1px #919191,
+        1px 3px 1px #919191,
+        1px 4px 1px #919191,
+        1px 5px 1px #919191,
+        1px 6px 1px #919191;
 }
 
 .CurrentWeather{
-  padding:2em;
-  margin-top:5em;
-  margin:3em;
-  margin-right:5em;
-  width:50%;
-  height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin:1vw;
+  min-width:60%;
+  margin-top:5vh;
+}
+
+.CurrentWeather h1{
+  color:white;
+  padding-top:1vh;
+}
+
+.WeatherCard{
+  width:100%;
+}
+
+.CurrentWeatherCard{
+  display:flex;
+  position:sticky;
+  height:90vh;
+  padding:1rem;
   color:white;
   text-shadow:0 0 .2rem white;
-  border: 5px solid hsl(0, 0%, 40%);
-  border-radius:15%;
-  outline: 5px solid hsl(0, 0%, 60%);
-  height:100%;
+  border-radius:10%;
   background-color:transparent;
-  box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
-              rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
-              rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
-              rgba(0, 0, 0, 0.06) 0px 2px 1px,
-              rgba(0, 0, 0, 0.09) 0px 4px 2px,
-              rgba(0, 0, 0, 0.09) 0px 8px 4px,
-              rgba(0, 0, 0, 0.09) 0px 16px 8px,
-              rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  overflow:scroll;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 10px 40px 2px;
 }
-.CurrentWeatherContainer img{
-  width:75%;
+
+.CurrentValues{
+  width:100%;
+  position:relative;
+  text-shadow: 1px 1px 1px #919191,
+        1px 2px 1px maroon,
+        1px 3px 1px maroon,
+        1px 4px 1px maroon;
+}
+
+#temp{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  left:0;
+  right:0;
+  top:35vh;
+  font-size:10vh;
+}
+
+#today{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  left:2vw;
+  top:0;
+  font-size:8vh;
+}
+
+#feelsLike{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  left:0;
+  right:0;
+  top:48vh;
+  font-size:3vh;
+}
+
+#info{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  left:0;
+  right:0;
+  top:28vh;
+  font-size:6vh;
+}
+
+#minMax{
+  position:absolute;
+  top:4vh;
+  right:1vh;
+  font-size:5vh;
+}
+
+#wind{
+  position:absolute;
+  top:12vh;
+  right:1vh;
+  font-size:2vw;
+}
+#humidity{
+  position:absolute;
+  top:18vh;
+  right:1vh;
+  font-size:2vw;
+}
+
+#description{
+  position:absolute;
+  bottom:1vh;
+  left:1vh;
+  font-size:2vw;
+}
+
+#time{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  left:0;
+  right:0;
+  bottom:1vh;
+  font-size:3vh;
+}
+
+#sunrise{
+  position:absolute;
+  bottom:10vh;
+  right:1vh;
+  font-size:2vh;
+}
+
+#sunset{
+  position:absolute;
+  bottom:1vh;
+  right:1vh;
+  font-size:2vh;
+}
+
+#redUp{
+  width:.8em;
+}
+#blueDown{
+  width:.5em;
+}
+
+#sunrise_pic{
+  width:5em;
+}
+
+#sunset_pic{
+  width:5em;
+}
+
+.LineChart{
+  margin:3vh;
+  width:100%;
+  border-radius:10%;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 10px 40px 2px;
+  overflow:scroll;
+  background-image:linear-gradient(red,rgba(255,0,0,.5) 1%,rgba(0,0,255,.5) 99%,blue);
+}
+
+.recharts-wrapper{
+  top:1vh;
+  left:2vh;
+  margin:1vh;
+  width:100%;
+}
+
+.Forecast{
+  display:flex;
+  color:white;
+  justify-content: center;
+  flex-grow:1;
+  margin:1vw;
+}
+
+.ForecastList{
+  display:flex;
+  margin-top:8vh;
+  flex-grow:1;
+  flex-wrap:wrap;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.Card{
+  display:flex;
+  flex-grow:1;
+  padding:1rem;
+  margin-bottom:1vw;
+  border-radius:5%;
+  background:blue;
+  text-shadow:0 0 .2rem white;
+  min-height:35vh;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.ForecastValues{
+  position:relative;
+  width:100%;
+  text-shadow: 1px 1px 1px #919191,
+        1px 2px 1px maroon,
+        1px 3px 1px maroon,
+        1px 4px 1px maroon;
+
+}
+
+#nameF{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  left:0;
+  right:0;
+  top:.5vw;
+  font-size:2.5em;
+}
+
+#descriptionF{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  left:0;
+  top:0;
+  bottom:1vw;
+}
+
+#maxTempF{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  right:0;
+  top:25%;
+  font-size:2vw;
+}
+
+#maxTempArrow{
+  width:.7em;
+}
+
+#minTempF{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  right:0;
+  bottom:35%;
+  font-size:2vw;
+}
+
+#minTempArrow{
+  width:.7em;
+}
+
+#feelsLikeF{
+  position:absolute;
+  bottom:-2.25vh;
+}
+
+#sunriseF{
+  position:absolute;
+  bottom:-3vh;
+  left:20%;
+}
+
+#dayF{
+  position:absolute;
+  bottom:-3vh;
+  left:40%;
+}
+
+#sunsetF{
+  position:absolute;
+  bottom:-3vh;
+  right:25%;
+}
+
+#nightF{
+  position:absolute;
+  bottom:-3vh;
+  right:3%;
+}
+
+#sunriseForecast{
+  width:2em;
+}
+
+#sunsetForecast{
+  width:2em;
+}
+
+#dayForecast{
+  width:2em;
+}
+
+#nightForecast{
+  width:2em;
+}
+
+#timeF{
+  position:absolute;
+  margin-left:auto;
+  margin-right:auto;
+  left:0;
+  right:0;
+  top:3.5vw;
+
 }
