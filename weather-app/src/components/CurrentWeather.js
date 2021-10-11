@@ -1,44 +1,34 @@
 import React from 'react';
-import Chart from './Chart';
 
 
 
 class CurrentWeather extends React.Component {
-  constructor(props){
-    super(props);
-  }
-
-  //<img id="img" src={this.props.iconPath.find(o => o.key === this.props.data.current.weather[0].icon).value} alt="Loading..."/>
 
   getDayNumber = (dayInput) => {
     switch(dayInput){
+      default:{
+        return ''
+      }
       case 0:{
         return 'Sunday'
-        break;
       }
       case 1:{
         return 'Monday'
-        break;
       }
       case 2:{
         return 'Tuesday'
-        break;
       }
       case 3:{
         return 'Wednesday'
-        break;
       }
       case 4:{
         return 'Thursday'
-        break;
       }
       case 5:{
         return 'Friday'
-        break;
       }
       case 6:{
         return 'Saturday'
-        break;
       }
     }
   }
@@ -59,13 +49,14 @@ class CurrentWeather extends React.Component {
 
         d += 22.5;
 
-        if (d < 0)
+        if (d < 0){
             d = 360 - Math.abs(d) % 360;
-        else
+        }
+        else{
             d = d % 360;
-
+        }
         let w = parseInt(d / 45);
-        return `${directions[w]}`;
+        return (`${directions[w]}`);
     }
 
   timeofDay = (x) => {
@@ -90,6 +81,7 @@ class CurrentWeather extends React.Component {
     else{
       let data = this.props.data;
       return (
+
         <div className="CurrentWeatherCard" style={{
                                                     backgroundImage: `url(${this.findImage(data.weather[0].icon)})`,
                                                     backgroundPosition: 'center',
@@ -100,7 +92,7 @@ class CurrentWeather extends React.Component {
             <p id="today">Today</p>
             <p id="info">{this.capitalizeFirst(data.weather[0].description)}</p>
             <p id="feelsLike">Feels Like: {Math.round(data.main.feels_like)}&deg;</p>
-            <p id="minMax"><img id="redUp" src={this.findImage('redUp')}/>  {Math.round(data.main.temp_max)}&deg; <img id="blueDown" src={this.findImage('blueDown')} /> {Math.round(data.main.temp_min)}&deg;</p>
+            <p id="minMax"><img id="redUp" src={this.findImage('thermoRed')}/>{Math.round(data.main.temp_max)}&deg; <img id="blueDown" src={this.findImage('thermoBlue')}/>{Math.round(data.main.temp_min)}&deg;</p>
             <p id="wind">{data.wind.deg}&deg; {this.degreesToDirection(data.wind.deg)} Wind at {Math.round(data.wind.speed)}mph</p>
             <p id="description">{data.weather[0].main} currently. <br/>The high will be {Math.round(data.main.temp_max)}&deg;,
               <br/>with a low of {Math.round(data.main.temp_min)}&deg;</p>

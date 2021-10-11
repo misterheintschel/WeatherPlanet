@@ -1,8 +1,8 @@
 import React from 'react';
-import sunny from './sunny.gif';
+import sunny from './800d.gif';
 import moon from './moon.gif';
 import sun from './sun.gif';
-import sunCloud from './sun-cloud.png';
+import _801 from './801d.gif';
 import moonCloud from './cloudy-moon.png';
 import cloudy from './cloudy.gif';
 import rainCloud from './rain-cloud.gif';
@@ -18,8 +18,8 @@ import sunrise from './yellowsun.webp';
 import sunset from './redsun.gif';
 import moonrise from './moonrise.png';
 import moonset from './moonset.png';
-import blueDown from './blue-down.png';
-import redUp from './red-up.png';
+import thermoBlue from './thermo-blue.png';
+import thermoRed from './thermo-red.png';
 
 const icons = [
   {
@@ -32,7 +32,7 @@ const icons = [
   },
   {
     key:'02d',
-    value:sunCloud
+    value:_801
   },
   {
     key:'02n',
@@ -40,7 +40,7 @@ const icons = [
   },
   {
     key:'03d',
-    value:sunCloud
+    value:_801
   },
   {
     key:'03n',
@@ -111,12 +111,12 @@ const icons = [
     value:moonset
   },
   {
-    key:'blueDown',
-    value:blueDown
+    key:'thermoBlue',
+    value:thermoBlue
   },
   {
-    key:'redUp',
-    value:redUp
+    key:'thermoRed',
+    value:thermoRed
   },
   {
     key:'sun',
@@ -127,6 +127,231 @@ const icons = [
     value:moon
   }
 ]
+
+/*
+const icons = [
+  {
+    key:'200',
+    value:
+  },
+  {
+    key:'201',
+    value:
+  },
+  {
+    key:'202',
+    value:
+  },
+  {
+    key:'210',
+    value:
+  },
+  {
+    key:'211',
+    value:
+  },
+  {
+    key:'212',
+    value:
+  },
+  {
+    key:'221',
+    value:
+  },
+  {
+    key:'230',
+    value:
+  },
+  {
+    key:'231',
+    value:
+  },
+  {
+    key:'232',
+    value:
+  },
+  {
+    key:'300',
+    value:
+  },
+  {
+    key:'301',
+    value:
+  },
+  {
+    key:'302',
+    value:
+  },
+  {
+    key:'310',
+    value:
+  },
+  {
+    key:'311',
+    value:
+  },
+  {
+    key:'312',
+    value:
+  },
+  {
+    key:'313',
+    value:
+  },
+  {
+    key:'314',
+    value:
+  },
+  {
+    key:'321',
+    value:
+  },
+  {
+    key:'500',
+    value:
+  },
+  {
+    key:'501',
+    value:
+  },
+  {
+    key:'502',
+    value:
+  },
+  {
+    key:'503',
+    value:
+  },
+  {
+    key:'504',
+    value:
+  },
+  {
+    key:'511',
+    value:
+  },
+  {
+    key:'520',
+    value:
+  },
+  {
+    key:'521',
+    value:
+  },
+  {
+    key:'522',
+    value:
+  },
+  {
+    key:'531',
+    value:
+  },
+  {
+    key:'600',
+    value:
+  },
+  {
+    key:'601',
+    value:
+  },
+  {
+    key:'602',
+    value:
+  },
+  {
+    key:'611',
+    value:
+  },
+  {
+    key:'612',
+    value:
+  },
+  {
+    key:'613',
+    value:
+  },
+  {
+    key:'615',
+    value:
+  },
+  {
+    key:'616',
+    value:
+  },
+  {
+    key:'620',
+    value:
+  },
+  {
+    key:'621',
+    value:
+  },
+  {
+    key:'622',
+    value:
+  },
+  {
+    key:'701',
+    value:
+  },
+  {
+    key:'711',
+    value:
+  },
+  {
+    key:'721',
+    value:
+  },
+  {
+    key:'731',
+    value:
+  },
+  {
+    key:'741',
+    value:
+  },
+  {
+    key:'751',
+    value:
+  },
+  {
+    key:'761',
+    value:
+  },
+  {
+    key:'762',
+    value:
+  },
+  {
+    key:'771',
+    value:
+  },
+  {
+    key:'781',
+    value:
+  },
+  {
+    key:'800',
+    value:
+  },
+  {
+    key:'801',
+    value:
+  },
+  {
+    key:'802',
+    value:
+  },
+  {
+    key:'803',
+    value:
+  },
+  {
+    key:'804',
+    value:
+  }
+]
+*/
 
 function Icons(){
 

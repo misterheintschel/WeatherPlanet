@@ -1,11 +1,7 @@
 import {React , Component} from 'react';
 import {LineChart, Line, XAxis, YAxis, Tooltip, Legend} from 'recharts';
-import background from '../resources/weather-icons/transparent-cloudy.png';
 
 class Chart extends Component {
-  constructor(props){
-    super(props);
-  }
 
   loadData = (data) => {
     let hours = [];
@@ -48,7 +44,7 @@ class Chart extends Component {
   		return (
         <div className="LineChart">
           <LineChart width={750} height={400} data={graph[0]}
-              margin={{ top: 5, right: 30, left: 5, bottom: 10 }}>
+              margin={{ top: 5, right: 25, left: 5, bottom: 10 }}>
             <XAxis stroke="black" dataKey="time" angle={-45} dy={20} interval={0}/>
             <YAxis tickFormatter={formatter} tickCount={15} type="number" domain={[(graph[1]-5),(graph[2]+5)]}
               stroke="black" dataKey="Temp" label={{value:"Temp\u00B0", position:"insideTop", dy:15, dx:-10, fill:"black"}}/>

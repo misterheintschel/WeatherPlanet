@@ -45,12 +45,17 @@ class Body extends Component {
           this.setState({
             searchCoords:{
               lat:data.coord.lat,
-              lng:data.coord.lon,
-              data:data
+              lng:data.coord.lon
             }
           })
         }.bind(this))
 
+  }
+
+  handleKeyPress = (e) => {
+    if(e.keyCode === 13) {
+      this.searchPull()
+    }
   }
 
   forecastPull = (lat,lng) => {
@@ -72,7 +77,6 @@ class Body extends Component {
         this.setState({
           forecast:data.hourly
         })
-        console.log(data.hourly)
       }.bind(this))
       .catch(function(){
 
@@ -111,25 +115,32 @@ class Body extends Component {
 
 
   renderBody(){
-    if (this.state.searchForecast === ''){
+    if (this.state.lat === 0 && this.state.lng === 0){
       return (
         <>
           <div className="BodyTop">
-            <div className="CurrentLocation">
-              <h3>Current Location: <br/>Latitude: <span>{this.state.lat}</span><br/>Longitude: <span>{this.state.lng}</span><br/>
-              City: <span>{this.state.location.name}</span></h3>
-            </div>
-            <div className="hidden">
-              <h1>This should not be visible</h1>
-            </div>
             <div className="Search">
-              <input id="searchInput" type="text" name="" placeholder="Enter Location" onChange={this.getSearch}/>
+              <input id="searchInput" type="text" name="" placeholder="Enter Location" onChange={this.getSearch} onKeyPress={this.handleKeyPress}/>
+              <button type="submit" onClick={this.searchPull}>Search</button>
+            </div>
+          </div>
+          <div className="BodyBottom">
+            <h1>No Location Data Available...</h1>
+            <h1>Please allow location sharing or search for your city.</h1>
+          </div>
+        </>
+      )
+    } else if (this.state.searchCoords.lat === 0 && this.state.searchCoords.lng === 0){
+      return (
+        <>
+          <div className="BodyTop">
+            <div className="Search">
+              <input id="searchInput" type="text" name="" placeholder="Enter Location" onChange={this.getSearch} onKeyPress={this.handleKeyPress}/>
               <button type="submit" onClick={this.searchPull}>Search</button>
             </div>
           </div>
           <div className="BodyBottom">
             <div className="CurrentWeather">
-              <h1 id="City">{this.state.location.name}</h1>
               <CurrentWeather data={this.state.location}
                               oneCall={this.state.forecast}
                               iconPath={icons}
@@ -148,22 +159,15 @@ class Body extends Component {
       return (
         <>
           <div className="BodyTop">
-            <div className="CurrentLocation">
-              <h3>Current Location: <br/>Latitude: <span>{this.state.lat}</span><br/>Longitude: <span>{this.state.lng}</span><br/>
-              City: <span>{this.state.location.name}</span></h3>}
-            </div>
-            <div className="hidden">
-              <h1>This should not be visible</h1>
-            </div>
             <div className="Search">
-              <input id="searchInput" type="text" name="" placeholder="Enter Location" onChange={this.getSearch}/>
+              <input id="searchInput" type="text" name="" placeholder="Enter Location" onChange={this.getSearch} onKeyPress={this.handleKeyPress}/>
               <button type="submit" onClick={this.searchPull}>Search</button>
             </div>
           </div>
           <div className="BodyBottom">
             <div className="CurrentWeather">
-              <h1 id="City">{this.state.searchCoords.data.name}</h1>
               <CurrentWeather data={this.state.searchForecast}
+                              oneCall={this.state.forecast}
                               iconPath={icons}
               />
             </div>
@@ -183,6 +187,7 @@ class Body extends Component {
 
       return (
         <div className="Body">
+        {console.log(this.state)}
         {this.renderBody()}
         </div>
       )
