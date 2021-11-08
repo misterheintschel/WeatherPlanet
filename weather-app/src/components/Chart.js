@@ -44,12 +44,12 @@ class Chart extends Component {
   		return (
         <div className="LineChart">
           <LineChart width={750} height={400} data={graph[0]}
-              margin={{ top: 5, right: 25, left: 5, bottom: 10 }}>
+              margin={{ top: 5, right: 35, left: 5, bottom: 10 }}>
             <XAxis stroke="black" dataKey="time" angle={-45} dy={20} interval={0}/>
             <YAxis tickFormatter={formatter} tickCount={15} type="number" domain={[(graph[1]-5),(graph[2]+5)]}
-              stroke="black" dataKey="Temp" label={{value:"Temp\u00B0", position:"insideTop", dy:15, dx:-10, fill:"black"}}/>
+              stroke="black" dataKey="Temp"/>
             <Tooltip />
-            <Legend width={100} wrapperStyle={{top: 10, right: 50, backgroundColor:'white', border: '1px solid #d5d5d5', borderRadius: 10, lineHeight: '40px', boxShadow:'2px 2px 10px 5px grey' }}/>
+            <Legend width={100} wrapperStyle={{top: 10, left: 80, backgroundColor:'white', border: '1px solid white', borderRadius: 10, lineHeight: '40px', boxShadow:'1px 1px 5px 1px white, -1px -1px 5px 1px white' }}/>
             <Line type="monotone" dataKey="Temp" datakey="time" stroke="red"/>
           </LineChart>
         </div>

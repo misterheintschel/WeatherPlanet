@@ -1,40 +1,42 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Header from './Header';
+import Login from './components/Login';
 import Forecast from './components/Forecast';
-import {Row, Col, FormControl, Button} from 'react-bootstrap';
 import CurrentWeather from './components/CurrentWeather';
 import Chart from './components/Chart';
 import icons from './resources/weather-icons/Icons';
 import './Body.css';
+import AutoComplete from './components/AutoComplete';
+
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const API_URL = process.env.REACT_APP_API_URL;
 
 
+
 class Body extends Component {
   constructor(props){
     super(props)
     this.state = {
+      current:'',
       lat:0,
       lng:0,
       location:'',
       forecast:'',
       forecastList:'',
+      oneCall:'',
       search:'',
-      searchCoords:{
-        lat:0,
-        lng:0
-      },
+      searchCoords:'',
+      searchLocation:'',
       searchForecast:'',
-      searchForecastList:''
+      searchForecastList:'',
+      searchOneCall:'',
+      showLogin:false,
+      loggedIn:false,
+      user:''
     }
-  }
-
-  getSearch = (val) => {
-    this.setState({
-      search:val.target.value
-    })
   }
 
   searchPull = () => {
@@ -46,27 +48,26 @@ class Body extends Component {
             searchCoords:{
               lat:data.coord.lat,
               lng:data.coord.lon
-            }
+            },
+            searchLocation:data,
+            current:'search'
           })
+          fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+
+              data.coord.lat+'&lon='+data.coord.lon+'&appid='+API_KEY+'&units=imperial')
+              .then(function(resp) {return resp.json()})
+              .then(function(info) {
+                this.setState({
+                  searchForecast:info.hourly,
+                  searchForecastList:info.daily,
+                  searchOneCall:info
+                })
+              }.bind(this))
         }.bind(this))
 
   }
 
-  handleKeyPress = (e) => {
-    if(e.keyCode === 13) {
-      this.searchPull()
-    }
-  }
-
-  forecastPull = (lat,lng) => {
-    fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+
-        lat+'&lon='+lng+'&appid='+API_KEY+'&units=imperial')
-        .then(function(resp) {return resp.json()})
-        .then(function(data) {
-          this.setState({
-            forecastList:data.daily
-          })
-        }.bind(this))
+  handleAutoComplete = (city) => {
+    this.setState({ search:city }, () => {this.searchPull()});
   }
 
   currentWeatherOneCall = (lat,lng) => {
@@ -75,7 +76,9 @@ class Body extends Component {
       .then(function(resp) {return resp.json()})
       .then(function(data) {
         this.setState({
-          forecast:data.hourly
+          forecast:data.hourly,
+          forecastList:data.daily,
+          oneCall:data
         })
       }.bind(this))
       .catch(function(){
@@ -90,7 +93,8 @@ class Body extends Component {
       .then(function(resp) {return resp.json()})//convert data to json
       .then(function(data) {
         this.setState({
-          location:data
+          location:data,
+          current:'location'
         })
         this.currentWeatherOneCall(data.coord.lat,data.coord.lon)
       }.bind(this))
@@ -107,89 +111,111 @@ class Body extends Component {
         lng: (Math.round(position.coords.longitude * 1000000) /1000000)
       })
       this.currentWeather(this.state.lat,this.state.lng);
-      this.forecastPull(this.state.lat,this.state.lng);
       }.bind(this));
     }
 
+  componentDidUpdate = () => {
+  }
 
+  showLocation = () => {
+    this.setState({ searchCoords:'', current:'location' });
+  }
 
+  showLogin = () => {
+    this.setState({ showLogin:true });
+  }
 
-  renderBody(){
-    if (this.state.lat === 0 && this.state.lng === 0){
-      return (
-        <>
-          <div className="BodyTop">
-            <div className="Search">
-              <input id="searchInput" type="text" name="" placeholder="Enter Location" onChange={this.getSearch} onKeyPress={this.handleKeyPress}/>
-              <button type="submit" onClick={this.searchPull}>Search</button>
-            </div>
-          </div>
-          <div className="BodyBottom">
-            <h1>No Location Data Available...</h1>
-            <h1>Please allow location sharing or search for your city.</h1>
-          </div>
-        </>
-      )
-    } else if (this.state.searchCoords.lat === 0 && this.state.searchCoords.lng === 0){
-      return (
-        <>
-          <div className="BodyTop">
-            <div className="Search">
-              <input id="searchInput" type="text" name="" placeholder="Enter Location" onChange={this.getSearch} onKeyPress={this.handleKeyPress}/>
-              <button type="submit" onClick={this.searchPull}>Search</button>
-            </div>
-          </div>
-          <div className="BodyBottom">
-            <div className="CurrentWeather">
-              <CurrentWeather data={this.state.location}
-                              oneCall={this.state.forecast}
-                              iconPath={icons}
-              />
-              <Chart data={this.state.forecast}/>
-            </div>
-            <div className="Forecast">
-              <Forecast list={this.state.forecastList}
-                        iconPath={icons}
-              />
-            </div>
-          </div>
-        </>
-      )
-    }else{
-      return (
-        <>
-          <div className="BodyTop">
-            <div className="Search">
-              <input id="searchInput" type="text" name="" placeholder="Enter Location" onChange={this.getSearch} onKeyPress={this.handleKeyPress}/>
-              <button type="submit" onClick={this.searchPull}>Search</button>
-            </div>
-          </div>
-          <div className="BodyBottom">
-            <div className="CurrentWeather">
-              <CurrentWeather data={this.state.searchForecast}
-                              oneCall={this.state.forecast}
-                              iconPath={icons}
-              />
-            </div>
-            <div className="Forecast">
-              <Forecast list={this.state.searchForecastList}
-                        iconPath={icons}
-              />
-            </div>
-          </div>
-        </>
-      )
+  removeLogin = () => {
+    this.setState({ showLogin:false });
+  }
+
+  login = (usr) => {
+    console.log(usr.email)
+    console.log(usr.password)
+  }
+
+  register = (usr) => {
+    console.log(usr.first)
+    console.log(usr.last)
+    console.log(usr.email)
+    console.log(usr.password)
+  }
+
+  renderBody(state){
+    let data;
+    let forecast;
+    let list;
+    let oneCall;
+    let showLogin
+    switch (state.current){
+      case 'search':
+        data = state.searchLocation;
+        forecast = state.searchForecast;
+        list = state.searchForecastList;
+        oneCall = state.searchOneCall;
+        showLogin = state.showLogin;
+        break;
+      case 'location':
+        data = state.location;
+        forecast = state.forecast;
+        list = state.forecastList;
+        oneCall = state.oneCall;
+        showLogin = state.showLogin;
+        break;
+      default:
+        data = '';
+        forecast = '';
+        list = '';
+        oneCall = '';
     }
+    return (
+
+      <Router>
+        <Switch>
+          <Route path='/'>
+            <>
+              <div className="BodyTop">
+                <div className="Search">
+                  <AutoComplete
+                    submit={this.handleAutoComplete} />
+                </div>
+              </div>
+              <div className="BodyBottom">
+                <div className="CurrentWeather">
+                  <CurrentWeather
+                    data={data}
+                    forecast={forecast}
+                    oneCall={oneCall}
+                    iconPath={icons}
+                  />
+                  <Chart
+                    data={forecast}/>
+                  /*ADD ALERTS ONECALL*/
+                </div>
+                <div className="Forecast">
+                  <Forecast
+                    list={list}
+                    iconPath={icons}
+                  />
+                </div>
+              </div>
+              {showLogin ? <Login close={this.removeLogin} register={this.register} login={this.login}/> : <></>}
+            </>
+          </Route>
+        </Switch>
+      </Router>
+
+    )
   }
 
   render() {
-
-
       return (
-        <div className="Body">
-        {console.log(this.state)}
-        {this.renderBody()}
-        </div>
+        <>
+          <Header showLogin={this.showLogin} submit={this.showLocation}/>
+          <div className="Body">
+            {this.renderBody(this.state)}
+          </div>
+        </>
       )
   }
 }

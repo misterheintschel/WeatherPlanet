@@ -8,7 +8,7 @@
   margin-bottom:10px;
   box-shadow:rgba(255, 255, 255, 0.1) 0px 2px 3px 2px;
   display:flex;
-  z-index:1;
+  z-index:2;
   box-shadow: outset 0 10px 10px black;
 }
 
@@ -77,7 +77,66 @@
   transform:scale(1.1);
 }
 
+.login-button:active button{
+  transform:scale(1);
+}
+
 .login-button:hover h2{
+  color:white;
+  -webkit-text-stroke-width:1px;
+  -webkit-text-stroke-color:black;
+}
+
+.location-button{
+  position:absolute;
+  color:white;
+  right:8rem;
+  top:.5rem;
+  width:auto;
+  height:3rem;
+  display:flex;
+  padding:5px;
+}
+
+.location-button button{
+  padding:0px;
+  color:white;
+  width:7rem;
+  min-height:3rem;
+  background-image:linear-gradient(black 1%,blue);
+  box-shadow:rgba(0, 0, 0, 0.8) 0 0 .5em;
+  border-width:0;
+  border-radius:1em;
+}
+
+.location-button button:hover{
+  cursor:pointer;
+  background-image:linear-gradient(cyan,blue);
+}
+
+.location-button h2{
+  color:white;
+  font-size: 2em;
+  -webkit-text-stroke-width:1px;
+  -webkit-text-stroke-color:blue;
+  text-shadow:0 0 5px black;
+}
+
+.location-button:hover{
+  color:white;
+
+}
+
+.location-button:hover button{
+  cursor:pointer;
+  transform:scale(1.1);
+}
+
+.location-button:active button{
+  transform:scale(1);
+}
+
+.location-button:hover h2{
   color:white;
   -webkit-text-stroke-width:1px;
   -webkit-text-stroke-color:black;
