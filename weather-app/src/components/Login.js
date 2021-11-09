@@ -93,7 +93,7 @@ class Login extends Component {
         return (
           <div className="LoginBackground">
             <form ref={node => this.node = node } className="LoginForm">
-              <img onClick={this.closeLogin} id="close-button" src={close}></img>
+              <img onClick={this.closeLogin} id="close-button" src={close} alt="Loading..."></img>
               <img id="login-logo" src={logo} alt="logo"></img>
               <div className="Welcome-Content">
                 <div className="Welcome">
@@ -112,7 +112,7 @@ class Login extends Component {
         return (
           <div className="LoginBackground">
             <form ref={node => this.node = node } className="LoginForm">
-              <img id="back-button" onClick={this.backtoChoice} src={back}></img>
+              <img id="back-button" onClick={this.backtoChoice} src={back} alt="Loading..."></img>
               <h1><span>Login</span></h1>
               <label>Email:</label><input type="text" name="email"></input><br/>
               <label>Password:</label><input type="password" name="password"></input><br/>
@@ -125,7 +125,7 @@ class Login extends Component {
         return (
           <div className="LoginBackground">
             <form ref={node => this.node = node } className="LoginForm">
-              <img id="back-button" onClick={this.backtoChoice} src={back}></img>
+              <img id="back-button" onClick={this.backtoChoice} src={back} alt="Loading..."></img>
               <h1><span>Register</span></h1>
               <label>First Name:</label><input type="text" name="first"></input><br/>
               <label>Last Name:</label><input type="text" name="last"></input><br/>
@@ -135,7 +135,8 @@ class Login extends Component {
             </form>
           </div>
         )
-        break;
+      case 'default':
+        return;
     }
   }
 

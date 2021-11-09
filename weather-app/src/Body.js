@@ -129,10 +129,16 @@ class Body extends Component {
     this.setState({ showLogin:false });
   }
 
-  login = (usr) => {
-    console.log(usr.email)
-    console.log(usr.password)
+  setUser = (info) => {
+    this.setState({ user:info })
   }
+
+  login = (usr) => {
+    fetch("http://localhost:9000/api")
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+  }
+
 
   register = (usr) => {
     console.log(usr.first)
