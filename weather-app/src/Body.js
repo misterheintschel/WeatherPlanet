@@ -133,18 +133,45 @@ class Body extends Component {
     this.setState({ user:info })
   }
 
+
+
   login = (usr) => {
-    fetch("http://localhost:9000/api")
+
+    let fetchData = {
+      method: "post",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email:usr.email,
+        password:usr.password
+      })
+    }
+    fetch("http://localhost:3001/user", fetchData)
       .then((res) => res.json())
       .then((data) => console.log(data))
   }
 
 
   register = (usr) => {
-    console.log(usr.first)
-    console.log(usr.last)
-    console.log(usr.email)
-    console.log(usr.password)
+
+    let fetchData = {
+      method: "post",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        namef:usr.first,
+        namel:usr.last,
+        email:usr.email,
+        password:usr.password
+      })
+    }
+    fetch("http://localhost:3001/register", fetchData)
+      .then((res) => res.json())
+      .then((data) => console.log(data))
   }
 
   renderBody(state){

@@ -1,10 +1,15 @@
-const express = require("express");
-
-const PORT = process.env.PORT || 9000;
-
+const express = require('express');
+const db = require('./queries');
+const bodyParser = require('body-parser');
 const app = express();
+const PORT = process.env.PORT || 3001;
+
+
 var data = {message:"Hello"}
 var str = JSON.stringify()
+
+
+
 
 app.use(function (req, res, next) {
 res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,11 +19,21 @@ res.setHeader('Access-Control-Allow-Credentials', true);
 next();
 });
 
+app.use(bodyParser.json())
 
-app.get("/api", (req, res) => {
+app.use(
+  bodyParser.urlencoded({
+    extended:true
+  })
+)
+
+app.post('/user', db.getUser);
+
+app.post('/register', db.registerUser);
+
+app.get('/api', (req, res) => {
   res.json({message:"Hello"});
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server Listening on ${PORT}`);

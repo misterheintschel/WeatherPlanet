@@ -92,7 +92,7 @@ class CurrentWeather extends React.Component {
           <div className="CurrentValues">
             <h1 id="name">{data.name}</h1>
             <p id="temp">{Math.round(data.main.temp)}&deg;</p>
-            <p id="today">Today</p>
+            <p id="today">Currently</p>
             <p id="info">{this.capitalizeFirst(data.weather[0].description)}</p>
             <p id="feelsLike">Feels Like: {Math.round(data.main.feels_like)}&deg;</p>
             <p id="minMax"><img alt="loading..." id="redUp" src={this.findImage('thermoRed')}/>{Math.round(data.main.temp_max)}&deg;<img alt="loading..." id="blueDown" src={this.findImage('thermoBlue')}/>{Math.round(data.main.temp_min)}&deg;</p>
