@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './Header.css';
 import logo from './weather-icon.png';
 
 const url = 'localhost:3000'
@@ -17,6 +16,14 @@ class Header extends Component {
     this.props.showLogin();
   }
 
+  showFavorites = (event) => {
+    this.props.favorites();
+  }
+
+  logout = (event) => {
+    this.props.logout();
+  }
+
   render(){
     return (
       <div className="nav">
@@ -25,10 +32,13 @@ class Header extends Component {
         </div>
         <div className="nav-buttons">
           <div className="login-button">
-            <button onClick={this.showLogin}>Login</button>
+            <button onClick={(this.props.logged != '' && this.props.logged != undefined) ? this.logout : this.showLogin}>{(this.props.logged != '' && this.props.logged != undefined) ? "Logout" : "Login"}</button>
           </div>
           <div className="location-button">
             <button onClick={this.onPush}>Current Location</button>
+          </div>
+          <div className ="favorites-button">
+            <button onClick={this.showFavorites}>Favorites</button>
           </div>
         </div>
       </div>

@@ -28,13 +28,18 @@
 	box-shadow: outset 0 10px 10px black;
 }
 
+.LoginForm h1 {
+	position:absolute;
+	top:1.5rem;
+}
+
 
 .LoginForm {
 	position:absolute;
 	display:flex;
 	flex-direction:column;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: center;
 	background-color:white;
 	width:60rem;
 	height:30rem;
@@ -48,8 +53,17 @@
   background-size: 400% 400%;
 }
 
-.LoginForm label {
+.Input {
+	text-align:right;
+}
+
+.Input label {
 	font-size:1.75em;
+	padding:1rem;
+}
+
+.Input input::selection {
+	color:white;
 }
 
 #login-logo {
@@ -160,6 +174,7 @@
 	background-image:linear-gradient(cyan,blue);
   color:white;
 }
+
 
 .nav {
   position:fixed;
@@ -305,6 +320,61 @@
   -webkit-text-stroke-color:black;
 }
 
+.favorites-button{
+  position:absolute;
+  color:white;
+  right:15.5rem;
+  top:.5rem;
+  width:auto;
+  height:3rem;
+  display:flex;
+  padding:5px;
+}
+
+.favorites-button button{
+  padding:0px;
+  color:white;
+  width:7rem;
+  min-height:3rem;
+  background-image:linear-gradient(black 1%,blue);
+  box-shadow:rgba(0, 0, 0, 0.8) 0 0 .5em;
+  border-width:0;
+  border-radius:1em;
+}
+
+.favorites-button button:hover{
+  cursor:pointer;
+  background-image:linear-gradient(cyan,blue);
+}
+
+.favorites-button h2{
+  color:white;
+  font-size: 2em;
+  -webkit-text-stroke-width:1px;
+  -webkit-text-stroke-color:blue;
+  text-shadow:0 0 5px black;
+}
+
+.favorites-button:hover{
+  color:white;
+
+}
+
+.favorites-button:hover button{
+  cursor:pointer;
+  transform:scale(1.1);
+}
+
+.favorites-button:active button{
+  transform:scale(1);
+}
+
+.favorites-button:hover h2{
+  color:white;
+  -webkit-text-stroke-width:1px;
+  -webkit-text-stroke-color:black;
+}
+
 
 
 .Body {
@@ -345,6 +415,10 @@
   border:none;
   border-radius:.5em;
   background-image:linear-gradient(darkblue,blue);
+}
+
+.Search input::selection {
+	color:white;
 }
 
 
@@ -478,7 +552,6 @@
   0 0 5px #fff,
   -5px 0 20px #fff,
   5px 0 20px #fff;
-  transform:scale(1.05);
 }
 
 
@@ -612,6 +685,25 @@
 	top:-.5rem;
   width:2.5em;
 }
+
+#favicon{
+	position:absolute;
+	width:3em;
+	right:0;
+	top:-2.5em;
+}
+
+#favicon:hover{
+	cursor:pointer;
+	transform:scale(1.1);
+}
+
+#favicon:active{
+	transform:scale(.8)
+}
+
+
+
 
 .LineChart{
   margin:1.5rem;

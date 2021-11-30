@@ -1,8 +1,12 @@
 import React from 'react';
-
-
+import pre from '../resources/weather-icons/favorite-pre.png';
+import post from '../resources/weather-icons/favorite-post.png';
+import fav from '../resources/weather-icons/favorite-hover.gif';
 
 class CurrentWeather extends React.Component {
+  constructor(props){
+    super(props);
+  }
 
   getDayNumber = (dayInput) => {
     switch(dayInput){
@@ -59,8 +63,8 @@ class CurrentWeather extends React.Component {
         return (`${directions[w]}`);
     }
 
-  timeofDay = (x) => {
-    if (x > 12){
+  timeofDay = (time) => {
+    if (time > 12){
       return 'PM';
     }
     else return 'AM';
@@ -70,6 +74,34 @@ class CurrentWeather extends React.Component {
     return this.props.iconPath.find(o => o.key === str).value;
   }
 
+  displayFavorite = (user,data) => {
+    let pic = pre;
+    let cities;
+    if (user != null) {cities = user.favorites;}
+
+    if(cities === undefined){
+      return pic;
+    }
+
+    if(cities === null){
+      return pic
+    }
+
+    if(cities.some(e => e.id === data.id)){
+      pic = post;
+      return pic;
+    }
+    else {
+      return pic;
+    }
+  }
+
+  addFavorite = () => {
+    return this.props.favorite();
+  }
+  removeFavorite = () => {
+    return this.props.remove();
+  }
 
   renderCurrentWeather = () => {
     if(this.props.data === '') {
@@ -82,6 +114,19 @@ class CurrentWeather extends React.Component {
     }
     else{
       let data = this.props.data;
+      let user = this.props.user;
+      let favorited;
+      if(user.favorites != undefined && user.favorites != null) {
+        if(user.favorites.some(e => e.id === data.id)){
+          favorited = true;
+        }
+        else {
+          favorited = false;
+        }
+      }
+      else {
+        favorited = false;
+      }
       return (
 
         <div className="CurrentWeatherCard" style={{
@@ -101,9 +146,10 @@ class CurrentWeather extends React.Component {
               <br/>with a low of {Math.round(data.main.temp_min)}&deg;</p>
             <p id="humidity">Humidity: {data.main.humidity}%</p>
             <p id="sunrise"><img alt="loading..." id="sunrise_pic" src={this.findImage('sunrise')}></img>{new Date(data.sys.sunrise * 1000).toLocaleTimeString([], {hour:'numeric',minute:'numeric'})}</p>
-            <p id="sunset"><img alt="loading..." id="sunset_pic" src={this.findImage('sunset')}></img>{new Date((data.sys.sunset * 1000) + data.timezone).toLocaleTimeString([], {hour:'numeric',minute:'numeric'})}</p>
+            <p id="sunset"><img alt="loading..." id="sunset_pic" src={this.findImage('sunset')}></img>{new Date(data.sys.sunset * 1000).toLocaleTimeString([], {hour:'numeric',minute:'numeric'})}</p>
             <p id="time">{new Date(data.dt * 1000).toString().substr(0,16)}</p>
           </div>
+          <label className="Btn"><img id="favicon" src={this.displayFavorite(user,data)} onMouseOver={(e) => e.currentTarget.src = fav} onMouseOut={(e) => e.currentTarget.src = this.displayFavorite(user,data)}  onClick={favorited ? this.removeFavorite : this.addFavorite}></img></label>
         </div>
       )
     }
@@ -118,5 +164,5 @@ class CurrentWeather extends React.Component {
   }
 }
 
-
+//onMouseOver={(e) => e.currentTarget.src = fav}
 export default CurrentWeather;

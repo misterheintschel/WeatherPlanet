@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import logo from '../weather-icon.png';
 import close from '../resources/weather-icons/x.png';
 import back from '../resources/weather-icons/back.png';
@@ -8,19 +8,7 @@ class Login extends Component {
     super(props);
     this.state = {
       handleClickOutside:this.handleClickOutside.bind(this),
-      action:'choice',
-      loginInput:
-      {
-        email:'',
-        password:''
-      },
-      registerInput:
-      {
-        first:'',
-        last:'',
-        email:'',
-        password:''
-      }
+      action:'choice'
     }
   }
 
@@ -67,7 +55,6 @@ class Login extends Component {
         email:e.target.form[0].value,
         password:e.target.form[1].value
       };
-    this.setState({ loginInput:log })
     this.props.login(log);
   }
 
@@ -80,7 +67,9 @@ class Login extends Component {
         email:e.target.form[2].value,
         password:e.target.form[3].value
       };
-    this.setState({ registerInput:reg })
+    if(reg.first == '') {
+
+    }
     this.props.register(reg)
   }
 
@@ -113,10 +102,14 @@ class Login extends Component {
           <div className="LoginBackground">
             <form ref={node => this.node = node } className="LoginForm">
               <img id="back-button" onClick={this.backtoChoice} src={back} alt="Loading..."></img>
+              <img onClick={this.closeLogin} id="close-button" src={close} alt="Loading..."></img>
               <h1><span>Login</span></h1>
-              <label>Email:</label><input type="text" name="email"></input><br/>
-              <label>Password:</label><input type="password" name="password"></input><br/>
-              <button id="login-button" type="submit" onClick={this.submitLogin}>Login</button>
+              <div className="Input">
+                <label>Email:</label><input type="text" name="email" required></input><br/>
+                <label>Password:</label><input type="password" name="password" required></input>
+                <p id="login-message"></p>
+                <button id="login-button" onClick={this.submitLogin}>Login</button>
+              </div>
             </form>
           </div>
         )
@@ -126,12 +119,16 @@ class Login extends Component {
           <div className="LoginBackground">
             <form ref={node => this.node = node } className="LoginForm">
               <img id="back-button" onClick={this.backtoChoice} src={back} alt="Loading..."></img>
+              <img onClick={this.closeLogin} id="close-button" src={close} alt="Loading..."></img>
               <h1><span>Register</span></h1>
-              <label>First Name:</label><input type="text" name="first"></input><br/>
-              <label>Last Name:</label><input type="text" name="last"></input><br/>
-              <label>Email:</label><input type="text" name="email"></input><br/>
-              <label>Password:</label><input type="password" name="password"></input><br/>
-              <button id="register-button" type="submit" onClick={this.submitRegister}>Register</button>
+              <div className="Input">
+                <label>First Name:  </label><input type="text" name="first" required></input><br/>
+                <label>Last Name:  </label><input type="text" name="last" required></input><br/>
+                <label>Email:  </label><input type="text" name="email" required></input><br/>
+                <label>Password:  </label><input type="password" name="password" required></input><br/>
+                <p id="registration-message"></p>
+                <button id="register-button" onClick={this.submitRegister}>Register</button>
+              </div>
             </form>
           </div>
         )

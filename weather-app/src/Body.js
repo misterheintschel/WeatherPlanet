@@ -39,6 +39,16 @@ class Body extends Component {
     }
   }
 
+  initUser = (id,first,last,email,favorites) => {
+    return {
+      id:id,
+      first:first,
+      last:last,
+      email:email,
+      favorites:favorites
+    }
+  }
+
   searchPull = () => {
     fetch('https://api.openweathermap.org/data/2.5/weather?q='+this.state.search+
           '&appid='+API_KEY+'&units=imperial')
@@ -136,7 +146,6 @@ class Body extends Component {
 
 
   login = (usr) => {
-
     let fetchData = {
       method: "post",
       headers: {
@@ -150,7 +159,15 @@ class Body extends Component {
     }
     fetch("http://localhost:3001/user", fetchData)
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        document.getElementById('login-message').innerHTML = "Login Successful. Redirecting..."
+        setTimeout(this.setState({ user:data[0], showLogin:false }), 5000)
+      })
+
+  }
+
+  logout = () => {
+    this.setState({ user: null })
   }
 
 
@@ -174,12 +191,99 @@ class Body extends Component {
       .then((data) => console.log(data))
   }
 
+  addFavorite = () => {
+
+    if(this.state.current === 'search'){
+      let name = this.state.searchLocation.name;
+      let id = this.state.searchLocation.id;
+      let user = this.state.user.id;
+      if(user != undefined && user != ''){
+        let fetchData = {
+          method: "post",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name:name,
+            id:id,
+            user:user
+          })
+        }
+        fetch("http://localhost:3001/favorite", fetchData)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log('success')
+            this.setState({ user: data[0]})
+
+          })
+      }
+    }
+    else {
+      let name = this.state.location.name;
+      let id = this.state.location.id;
+      let user = this.state.user.id;
+      if(user != undefined){
+        let fetchData = {
+          method: "post",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name:name,
+            id:id,
+            user:user
+          })
+        }
+        fetch("http://localhost:3001/favorite", fetchData)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data)
+
+          })
+      }
+    }
+  }
+
+  removeFavorite = () => {
+    let city;
+    let user = this.state.user.id;
+    if(this.state.current === 'search'){
+      city = this.state.searchLocation.id
+    }
+    else {
+      city = this.state.location.id
+    }
+    let fetchData = {
+      method: "post",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user:user,
+        city:city
+      })
+    }
+    fetch("http://localhost:3001/removeFavorite", fetchData)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+      })
+  }
+
+  showFavorites = () => {
+    console.log('success')
+  }
+
   renderBody(state){
     let data;
     let forecast;
     let list;
     let oneCall;
-    let showLogin
+    let showLogin;
+    let user;
     switch (state.current){
       case 'search':
         data = state.searchLocation;
@@ -187,6 +291,8 @@ class Body extends Component {
         list = state.searchForecastList;
         oneCall = state.searchOneCall;
         showLogin = state.showLogin;
+        user = state.user;
+
         break;
       case 'location':
         data = state.location;
@@ -194,12 +300,14 @@ class Body extends Component {
         list = state.forecastList;
         oneCall = state.oneCall;
         showLogin = state.showLogin;
+        user = state.user;
         break;
       default:
         data = '';
         forecast = '';
         list = '';
         oneCall = '';
+        user = '';
     }
     return (
 
@@ -215,11 +323,15 @@ class Body extends Component {
               </div>
               <div className="BodyBottom">
                 <div className="CurrentWeather">
+
                   <CurrentWeather
                     data={data}
                     forecast={forecast}
                     oneCall={oneCall}
                     iconPath={icons}
+                    user={user}
+                    favorite={this.addFavorite}
+                    remove={this.removeFavorite}
                   />
                   <Chart
                     data={forecast}/>
@@ -244,8 +356,8 @@ class Body extends Component {
   render() {
       return (
         <>
-          <Header showLogin={this.showLogin} submit={this.showLocation}/>
-          <div className="Body">
+          <Header showLogin={this.showLogin} logged={this.state.user} logout={this.logout}  favorites={this.showFavorites} submit={this.showLocation}/>
+          <div className="Body">{console.log(this.state)}{console.log(this.state.user.favorites)}
             {this.renderBody(this.state)}
           </div>
         </>
