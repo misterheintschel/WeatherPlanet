@@ -1,0 +1,41 @@
+-- public.users definition
+
+-- Drop table
+
+-- DROP TABLE public.users;
+
+CREATE TABLE public.users (
+	id serial4 NOT NULL,
+	namef varchar(30) NULL,
+	namel varchar(30) NULL,
+	email varchar(30) NULL,
+	"password" text NULL,
+	CONSTRAINT users_pkey PRIMARY KEY (id),
+	CONSTRAINT users_un UNIQUE (email)
+);
+
+-- Permissions
+
+ALTER TABLE public.users OWNER TO me;
+GRANT ALL ON TABLE public.users TO me;
+
+
+-- public.favorites definition
+
+-- Drop table
+
+-- DROP TABLE public.favorites;
+
+CREATE TABLE public.favorites (
+	id serial4 NOT NULL,
+	weather_api_id int4 NOT NULL,
+	user_id int4 NOT NULL,
+	city_name varchar(40) NOT NULL,
+	CONSTRAINT favorites_pk PRIMARY KEY (id),
+	CONSTRAINT favorites_fk FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+
+-- Permissions
+
+ALTER TABLE public.favorites OWNER TO me;
+GRANT ALL ON TABLE public.favorites TO me;

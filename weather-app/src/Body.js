@@ -5,6 +5,8 @@ import Login from './components/Login';
 import Forecast from './components/Forecast';
 import CurrentWeather from './components/CurrentWeather';
 import Chart from './components/Chart';
+import Alerts from './components/Alerts';
+import Favorites from './components/Favorites';
 import icons from './resources/weather-icons/Icons';
 import './Body.css';
 import AutoComplete from './components/AutoComplete';
@@ -13,7 +15,7 @@ import AutoComplete from './components/AutoComplete';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const API_URL = process.env.REACT_APP_API_URL;
-
+const SERVER = process.env.SERVER_SIDE_API_URL;
 
 
 class Body extends Component {
@@ -39,21 +41,13 @@ class Body extends Component {
     }
   }
 
-  initUser = (id,first,last,email,favorites) => {
-    return {
-      id:id,
-      first:first,
-      last:last,
-      email:email,
-      favorites:favorites
-    }
-  }
-
   searchPull = () => {
     fetch('https://api.openweathermap.org/data/2.5/weather?q='+this.state.search+
           '&appid='+API_KEY+'&units=imperial')
         .then(function(resp) {return resp.json()})
         .then(function(data) {
+          if(data.cod != 400) {
+          console.log(data)
           this.setState({
             searchCoords:{
               lat:data.coord.lat,
@@ -72,6 +66,7 @@ class Body extends Component {
                   searchOneCall:info
                 })
               }.bind(this))
+          } else return
         }.bind(this))
 
   }
@@ -139,9 +134,7 @@ class Body extends Component {
     this.setState({ showLogin:false });
   }
 
-  setUser = (info) => {
-    this.setState({ user:info })
-  }
+
 
 
 
@@ -161,8 +154,11 @@ class Body extends Component {
       .then((res) => res.json())
       .then((data) => {
         document.getElementById('login-message').innerHTML = "Login Successful. Redirecting..."
-        setTimeout(this.setState({ user:data[0], showLogin:false }), 5000)
+        alert("Login Successful!")
+        setTimeout(this.setState({ user:data[0], showLogin:false }),[ 5000])
+        this.getFavorites()
       })
+
 
   }
 
@@ -197,6 +193,9 @@ class Body extends Component {
       let name = this.state.searchLocation.name;
       let id = this.state.searchLocation.id;
       let user = this.state.user.id;
+      if(this.state.user.favorites.some(e => e.id === id)){
+        return
+      }
       if(user != undefined && user != ''){
         let fetchData = {
           method: "post",
@@ -213,9 +212,9 @@ class Body extends Component {
         fetch("http://localhost:3001/favorite", fetchData)
           .then((res) => res.json())
           .then((data) => {
-            console.log('success')
-            this.setState({ user: data[0]})
-
+            console.log(data)
+            alert(name + " was added as a favorite.")
+            this.getFavorites()
           })
       }
     }
@@ -240,20 +239,47 @@ class Body extends Component {
           .then((res) => res.json())
           .then((data) => {
             console.log(data)
-
+            alert(name + " was added as a favorite.")
+            this.getFavorites()
           })
       }
     }
+
+  }
+
+  getFavorites = () => {
+    let user = this.state.user.id;
+    let fetchData = {
+      method: "post",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user:user
+      })
+    }
+    fetch("http://localhost:3001/getFavorites", fetchData)
+      .then((res) => res.json())
+      .then((data) => {
+        if(data != null){
+          this.setState({ user:data[0] })
+        }
+        else if (data === null){ console.log('data was null')}
+      })
   }
 
   removeFavorite = () => {
     let city;
+    let name;
     let user = this.state.user.id;
     if(this.state.current === 'search'){
       city = this.state.searchLocation.id
+      name = this.state.searchLocation.name
     }
     else {
       city = this.state.location.id
+      name = this.state.location.name
     }
     let fetchData = {
       method: "post",
@@ -270,11 +296,13 @@ class Body extends Component {
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
+        alert(name + " was removed as a favorite.")
+        this.getFavorites()
       })
   }
 
   showFavorites = () => {
-    console.log('success')
+
   }
 
   renderBody(state){
@@ -313,6 +341,24 @@ class Body extends Component {
 
       <Router>
         <Switch>
+          <Route path='/favorites'>
+            <>
+              <div className="BodyTop">
+                <div className="Search">
+                  <AutoComplete
+                    submit={this.handleAutoComplete} />
+                </div>
+              </div>
+              <div className="BodyBottom">
+                <div className="Favorites">
+                  <Favorites
+                    user={user}
+                  />
+                </div>
+              </div>
+              {showLogin ? <Login close={this.removeLogin} register={this.register} login={this.login}/> : <></>}
+            </>
+          </Route>
           <Route path='/'>
             <>
               <div className="BodyTop">
@@ -331,11 +377,15 @@ class Body extends Component {
                     iconPath={icons}
                     user={user}
                     favorite={this.addFavorite}
+                    getFavorites={this.getFavorites}
                     remove={this.removeFavorite}
                   />
                   <Chart
-                    data={forecast}/>
-                  /*ADD ALERTS ONECALL*/
+                    data={forecast}
+                  />
+                  <div className="Alerts">
+                    {oneCall === '' ? <></> : <Alerts alerts={oneCall.alerts}/>}
+                  </div>
                 </div>
                 <div className="Forecast">
                   <Forecast
@@ -356,8 +406,8 @@ class Body extends Component {
   render() {
       return (
         <>
-          <Header showLogin={this.showLogin} logged={this.state.user} logout={this.logout}  favorites={this.showFavorites} submit={this.showLocation}/>
-          <div className="Body">{console.log(this.state)}{console.log(this.state.user.favorites)}
+          <Header showLogin={this.showLogin} logged={this.state.user} logout={this.logout} submit={this.showLocation}/>
+          <div className="Body">{console.log(this.state)}
             {this.renderBody(this.state)}
           </div>
         </>

@@ -69,7 +69,7 @@ export class AutoComplete extends Component {
         if(filteredSuggestions.length){
           suggestionsListComponent = (
             <ul className="suggestions">
-              {filteredSuggestions.slice(0,15).map((suggestion, index) => {
+              {filteredSuggestions.slice(0,50).map((suggestion, index) => {
                 return (
                   <li className="suggestion" key={suggestion.key} onClick={onClick}>
                     {suggestion.name +', '+suggestion.state + ' ' + suggestion.country}

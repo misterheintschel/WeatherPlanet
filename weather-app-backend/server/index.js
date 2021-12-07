@@ -24,11 +24,13 @@ app.use(
 
 app.post('/user', db.getUser);
 
+app.post('/register', db.registerUser);
+
 app.post('/favorite', db.addFavorite);
 
-app.post('/removeFavorite', db.removeFavorite);
+app.post('/getFavorites', db.getFavorites);
 
-app.post('/register', db.registerUser);
+app.post('/removeFavorite', db.removeFavorite);
 
 app.listen(PORT, () => {
   console.log(`Server Listening on ${PORT}`);

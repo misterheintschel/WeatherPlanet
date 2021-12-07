@@ -116,12 +116,14 @@ class CurrentWeather extends React.Component {
       let data = this.props.data;
       let user = this.props.user;
       let favorited;
-      if(user.favorites != undefined && user.favorites != null) {
-        if(user.favorites.some(e => e.id === data.id)){
-          favorited = true;
-        }
-        else {
-          favorited = false;
+      if(user != null){
+        if(user.favorites != undefined && user.favorites != null) {
+          if(user.favorites.some(e => e.id === data.id)){
+            favorited = true;
+          }
+          else {
+            favorited = false;
+          }
         }
       }
       else {
@@ -149,7 +151,7 @@ class CurrentWeather extends React.Component {
             <p id="sunset"><img alt="loading..." id="sunset_pic" src={this.findImage('sunset')}></img>{new Date(data.sys.sunset * 1000).toLocaleTimeString([], {hour:'numeric',minute:'numeric'})}</p>
             <p id="time">{new Date(data.dt * 1000).toString().substr(0,16)}</p>
           </div>
-          <label className="Btn"><img id="favicon" src={this.displayFavorite(user,data)} onMouseOver={(e) => e.currentTarget.src = fav} onMouseOut={(e) => e.currentTarget.src = this.displayFavorite(user,data)}  onClick={favorited ? this.removeFavorite : this.addFavorite}></img></label>
+          <label className="Btn">{(user != '' && user != undefined && user != null)? <img id="favicon" src={this.displayFavorite(user,data)} onMouseOver={(e) => e.currentTarget.src = fav} onMouseOut={(e) => e.currentTarget.src = this.displayFavorite(user,data)}  onClick={favorited ? this.removeFavorite : this.addFavorite}></img> : <></>}</label>
         </div>
       )
     }
