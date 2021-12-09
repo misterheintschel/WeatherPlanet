@@ -10,7 +10,7 @@ import Favorites from './components/Favorites';
 import icons from './resources/weather-icons/Icons';
 import './Body.css';
 import AutoComplete from './components/AutoComplete';
-
+import Cookies from 'js-cookie';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;

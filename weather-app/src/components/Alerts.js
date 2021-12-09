@@ -34,6 +34,17 @@ class Alerts extends Component {
       return timeValue;
     }
 
+    capitalizeFirst = (str) => {
+      const arr = str.split(" ");
+
+      for (var i = 0; i < arr.length; i++){
+        arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+      }
+
+      const str2 = arr.join(" ");
+      return str2;
+    }
+
 
   displayAlerts = (alerts) => {
 
@@ -47,14 +58,14 @@ class Alerts extends Component {
               <div className="alert-values">
                 <img id="phone" src={phone}></img>
                 <img id="phone2" src={phone}></img>
-                <img id="alertgif" src={alert}></img>
-                <h2 id="event"><span>{element.event}</span></h2>
+                <h2 id="alert-neon">ALERT!</h2>
+                <h2 id="event">{this.capitalizeFirst(element.event)}</h2>
                 <p id="sender">Sender: <span>{element.sender_name}</span></p>
                 <p id="descriptiona">Description: {element.description}</p>
               </div>
               <div className="alert-times">
-                <p id="starts">Starts: <br/>{new Date(element.start * 1000).toString().substr(0,16)}<br/><span>{this.timeCalc((new Date(element.start * 1000).toString().substr(16,9)))}</span></p>
-                <p id="ends">Ends: <br/>{new Date(element.end * 1000).toString().substr(0,16)}<br/><span>{this.timeCalc((new Date(element.end * 1000).toString().substr(16,9)))}</span></p>
+                <p id="starts">Starts: <br/>{new Date(element.start * 1000).toString().substr(0,16)}<br/><br/><span>{this.timeCalc((new Date(element.start * 1000).toString().substr(16,9)))}</span></p>
+                <p id="ends">Ends: <br/>{new Date(element.end * 1000).toString().substr(0,16)}<br/><br/><span>{this.timeCalc((new Date(element.end * 1000).toString().substr(16,9)))}</span></p>
               </div>
             </div>
           </div>
@@ -63,7 +74,7 @@ class Alerts extends Component {
     }
     else return (
       <div className="no-Alert">
-        <h4>THERE ARE CURRENTLY NO WEATHER ALERTS FOR THIS LOCATION</h4>
+
       </div>
     )
 

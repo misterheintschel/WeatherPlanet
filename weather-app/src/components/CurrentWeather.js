@@ -96,6 +96,20 @@ class CurrentWeather extends React.Component {
     }
   }
 
+  addHours = (date,offset) => {
+    let hours = offset / 3600;
+    let time = new Date(date * 1000);
+    let off = date+offset
+    let offdate = new Date(off * 1000)
+    let timeString = time.toUTCString();
+    let newb = new Date(Date.UTC(timeString))
+    console.log('hours',hours)
+    console.log('off',offdate)
+    console.log('time',time)
+    console.log('timeString',timeString)
+    console.log('newb',newb)
+  }
+
   addFavorite = () => {
     return this.props.favorite();
   }
@@ -115,6 +129,9 @@ class CurrentWeather extends React.Component {
     else{
       let data = this.props.data;
       let user = this.props.user;
+      let oneCall = this.props.oneCall;
+      let sunrise = data.sys.sunrise;
+      let sunset = data.sys.sunset;
       let favorited;
       if(user != null){
         if(user.favorites != undefined && user.favorites != null) {
@@ -137,6 +154,7 @@ class CurrentWeather extends React.Component {
                                                     backgroundSize: 'cover',
                                                     backgroundRepeat: 'no-repeat'}}>
           <div className="CurrentValues">
+            {this.addHours(sunrise,oneCall.timezone_offset)}
             <h1 id="name">{data.name}</h1>
             <p id="temp">{Math.round(data.main.temp)}&deg;</p>
             <p id="today">Currently</p>
@@ -147,8 +165,10 @@ class CurrentWeather extends React.Component {
             <p id="description">{data.weather[0].main} currently. <br/>The high will be {Math.round(data.main.temp_max)}&deg;,
               <br/>with a low of {Math.round(data.main.temp_min)}&deg;</p>
             <p id="humidity">Humidity: {data.main.humidity}%</p>
-            <p id="sunrise"><img alt="loading..." id="sunrise_pic" src={this.findImage('sunrise')}></img>{new Date(data.sys.sunrise * 1000).toLocaleTimeString([], {hour:'numeric',minute:'numeric'})}</p>
-            <p id="sunset"><img alt="loading..." id="sunset_pic" src={this.findImage('sunset')}></img>{new Date(data.sys.sunset * 1000).toLocaleTimeString([], {hour:'numeric',minute:'numeric'})}</p>
+            <p id="sunrise">{new Date(sunrise * 1000).toLocaleString([], { hour:'numeric',minute:'numeric' })}</p>
+            <img alt="loading..." id="sunrise_pic" src={this.findImage('sunrise')}></img>
+            <p id="sunset">{new Date(sunset * 1000).toLocaleString([], { hour:'numeric',minute:'numeric' })}</p>
+            <img alt="loading..." id="sunset_pic" src={this.findImage('sunset')}></img>
             <p id="time">{new Date(data.dt * 1000).toString().substr(0,16)}</p>
           </div>
           <label className="Btn">{(user != '' && user != undefined && user != null)? <img id="favicon" src={this.displayFavorite(user,data)} onMouseOver={(e) => e.currentTarget.src = fav} onMouseOut={(e) => e.currentTarget.src = this.displayFavorite(user,data)}  onClick={favorited ? this.removeFavorite : this.addFavorite}></img> : <></>}</label>
