@@ -1,7 +1,10 @@
-## Weather Planet
+# Weather Planet #
 
-### Welcome to Weather Planet! This Single-Page Web Application for viewing location based weather information was created using React.js, Express.js, and PostgreSQL.
+### Welcome to Weather Planet! This Single-Page Web Application for viewing location based weather information was created using React.js, Express.js, and PostgreSQL. ###
 
-[Demonstration](https://youtu.be/WKBpNc2geA4)
+## _[Demo](https://youtu.be/WKBpNc2geA4)_ ##
 
-Thanks so much for taking the time to check it out! 
+### Thank you so much for checking it out! ###
+
+
+
