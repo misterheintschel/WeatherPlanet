@@ -6,15 +6,6 @@
 ### Thank you so much for checking it out! 
 
 
-# _TODO:_ 
-
-***
--fix timezone offset <br/>
-***
--favorites page <br/>
-***
--persisting login upon page refresh
-***
 
 
 
