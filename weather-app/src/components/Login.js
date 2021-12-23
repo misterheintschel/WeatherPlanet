@@ -67,7 +67,7 @@ class Login extends Component {
         email:e.target.form[2].value,
         password:e.target.form[3].value
       };
-    if(reg.first == '') {
+    if(reg.first === '') {
 
     }
     this.props.register(reg)
@@ -82,11 +82,13 @@ class Login extends Component {
         return (
           <div className="LoginBackground">
             <form ref={node => this.node = node } className="LoginForm">
-              <img onClick={this.closeLogin} id="close-button" src={close} alt="Loading..."></img>
+              <div className="login-nav">
+                <img onClick={this.closeLogin} id="close-button" src={close} alt="Loading..."></img>
+              </div>
               <img id="login-logo" src={logo} alt="logo"></img>
               <div className="Welcome-Content">
                 <div className="Welcome">
-                  {welcome}
+                  <div id="welcome-message">{welcome}</div>
                 </div>
                 <div className="Login-Register">
                   <button onClick={this.login}>Login</button>
@@ -101,8 +103,9 @@ class Login extends Component {
         return (
           <div className="LoginBackground">
             <form ref={node => this.node = node } className="LoginForm">
-              <img id="back-button" onClick={this.backtoChoice} src={back} alt="Loading..."></img>
-              <img onClick={this.closeLogin} id="close-button" src={close} alt="Loading..."></img>
+              <div className="login-nav">
+                <img id="back-button" onClick={this.backtoChoice} src={back} alt="Loading..."></img>
+              </div>
               <h1><span>Login</span></h1>
               <div className="Input">
                 <label>Email:</label><input type="text" name="email" required></input><br/>
@@ -118,8 +121,9 @@ class Login extends Component {
         return (
           <div className="LoginBackground">
             <form ref={node => this.node = node } className="LoginForm">
-              <img id="back-button" onClick={this.backtoChoice} src={back} alt="Loading..."></img>
-              <img onClick={this.closeLogin} id="close-button" src={close} alt="Loading..."></img>
+              <div className="login-nav">
+                <img id="back-button" onClick={this.backtoChoice} src={back} alt="Loading..."></img>
+              </div>
               <h1><span>Register</span></h1>
               <div className="Input">
                 <label>First Name:  </label><input type="text" name="first" required></input><br/>

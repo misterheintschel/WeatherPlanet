@@ -34,7 +34,7 @@ class Chart extends Component {
 	renderChart = () => {
     if (this.props.data === ''){
       return (
-        <div className="LineChart">
+        <div>
         </div>
       );
     }
@@ -43,8 +43,8 @@ class Chart extends Component {
       const formatter = (value) => `${value}\u00B0`;
   		return (
         <div className="LineChart">
-          <LineChart width={750} height={400} data={graph[0]}
-              margin={{ top: 5, right: 35, left: 5, bottom: 10 }}>
+          <LineChart width={800} height={400} data={graph[0]}
+              margin={{ top: 5, right: 40, left: -5, bottom: 10 }}>
             <XAxis stroke="black" dataKey="time" angle={-45} dy={20} interval={0}/>
             <YAxis tickFormatter={formatter} tickCount={15} type="number" domain={[(graph[1]-5),(graph[2]+5)]}
               stroke="black" dataKey="Temp"/>

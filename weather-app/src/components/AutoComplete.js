@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-let admins = require('../resources/city.list.json');
+var cities = require('../resources/city.list.json');
 
 export class AutoComplete extends Component {
   constructor(props){
@@ -18,10 +17,10 @@ export class AutoComplete extends Component {
     this.setState({
       userInput:val.currentTarget.value
     })
-    for (let i = 0; i <admins.length; i++){
+    for (let i = 0; i <cities.length; i++){
       if (this.state.userInput.length >= 2){
-        if (admins[i].name.toLowerCase().includes(this.state.userInput.toLowerCase())) {
-          list.push({name:admins[i].name, state:admins[i].state, country:admins[i].country, key:admins[i].id});
+        if (cities[i].name.toLowerCase().includes(this.state.userInput.toLowerCase())) {
+          list.push({name:cities[i].name, state:cities[i].state, country:cities[i].country, key:cities[i].id});
         }
       }
 

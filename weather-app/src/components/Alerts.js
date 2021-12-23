@@ -56,8 +56,6 @@ class Alerts extends Component {
           <div className="Alert" key={index}>
             <div className="alert-element">
               <div className="alert-values">
-                <img id="phone" src={phone}></img>
-                <img id="phone2" src={phone}></img>
                 <h2 id="alert-neon">ALERT!</h2>
                 <h2 id="event">{this.capitalizeFirst(element.event)}</h2>
                 <p id="sender">Sender: <span>{element.sender_name}</span></p>

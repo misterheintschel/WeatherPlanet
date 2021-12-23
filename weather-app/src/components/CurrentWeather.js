@@ -103,11 +103,7 @@ class CurrentWeather extends React.Component {
     let offdate = new Date(off * 1000)
     let timeString = time.toUTCString();
     let newb = new Date(Date.UTC(timeString))
-    console.log('hours',hours)
-    console.log('off',offdate)
-    console.log('time',time)
-    console.log('timeString',timeString)
-    console.log('newb',newb)
+
   }
 
   addFavorite = () => {

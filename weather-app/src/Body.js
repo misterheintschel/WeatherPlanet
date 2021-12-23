@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from './Header';
 import Login from './components/Login';
+import AutoComplete from './components/AutoComplete';
 import Forecast from './components/Forecast';
 import CurrentWeather from './components/CurrentWeather';
 import Chart from './components/Chart';
@@ -9,8 +10,6 @@ import Alerts from './components/Alerts';
 import Favorites from './components/Favorites';
 import icons from './resources/weather-icons/Icons';
 import './Body.css';
-import AutoComplete from './components/AutoComplete';
-import Cookies from 'js-cookie';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -111,11 +110,13 @@ class Body extends Component {
 
   componentDidMount = () => {
     navigator.geolocation.getCurrentPosition(function(position) {
+      let lat = (Math.round(position.coords.latitude * 1000000) /1000000);
+      let lng = (Math.round(position.coords.longitude * 1000000) /1000000)
       this.setState({
-        lat: (Math.round(position.coords.latitude * 1000000) /1000000),
-        lng: (Math.round(position.coords.longitude * 1000000) /1000000)
+        lat:lat,
+        lng:lng
       })
-      this.currentWeather(this.state.lat,this.state.lng);
+      this.currentWeather(lat,lng);
       }.bind(this));
     }
 
@@ -155,7 +156,7 @@ class Body extends Component {
       .then((data) => {
         document.getElementById('login-message').innerHTML = "Login Successful. Redirecting..."
         alert("Login Successful!")
-        setTimeout(this.setState({ user:data[0], showLogin:false }),[ 5000])
+        this.setState({ user:data[0], showLogin:false })
         this.getFavorites()
       })
 
@@ -388,6 +389,7 @@ class Body extends Component {
                   </div>
                 </div>
                 <div className="Forecast">
+                  {list === '' ? <></> : <h1 id="sevenday">7-Day Forecast</h1>}
                   <Forecast
                     list={list}
                     iconPath={icons}
