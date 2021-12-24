@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import logo from '../weather-icon.png';
-import alert from '../resources/weather-icons/alert.gif';
 
 class Alerts extends Component {
   constructor(props){
