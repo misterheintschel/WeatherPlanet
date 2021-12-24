@@ -21,7 +21,6 @@
 .env.test.local
 .env.production.local
 .script.sh
-src/apis/config.js
 
 npm-debug.log*
 yarn-debug.log*
