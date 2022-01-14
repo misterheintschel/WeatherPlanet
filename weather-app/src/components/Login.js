@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import logo from '../weather-icon.png';
 import close from '../resources/weather-icons/x.png';
 import back from '../resources/weather-icons/back.png';
@@ -59,7 +59,6 @@ class Login extends Component {
   }
 
   submitRegister = (e) => {
-    e.preventDefault();
     let reg =
       {
         first:e.target.form[0].value,
@@ -98,7 +97,6 @@ class Login extends Component {
             </form>
           </div>
         )
-        break;
       case 'login':
         return (
           <div className="LoginBackground">
@@ -116,7 +114,6 @@ class Login extends Component {
             </form>
           </div>
         )
-        break;
       case 'register':
         return (
           <div className="LoginBackground">
@@ -136,7 +133,7 @@ class Login extends Component {
             </form>
           </div>
         )
-      case 'default':
+      default:
         return;
     }
   }

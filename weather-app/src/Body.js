@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import Header from './Header';
 import Login from './components/Login';
 import AutoComplete from './components/AutoComplete';
@@ -14,8 +16,8 @@ import './Body.css';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const API_URL = process.env.REACT_APP_API_URL;
-const SERVER = process.env.SERVER_SIDE_API_URL;
-
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const myStorage = window.sessionStorage;
 
 class Body extends Component {
   constructor(props){
@@ -36,17 +38,16 @@ class Body extends Component {
       searchOneCall:'',
       showLogin:false,
       loggedIn:false,
-      user:''
+      user:null,
+      redirect:null
     }
   }
 
   searchPull = () => {
-    fetch('https://api.openweathermap.org/data/2.5/weather?q='+this.state.search+
-          '&appid='+API_KEY+'&units=imperial')
-        .then(function(resp) {return resp.json()})
-        .then(function(data) {
-          if(data.cod != 400) {
-          console.log(data)
+    fetch('https://api.openweathermap.org/data/2.5/weather?q='+this.state.search+'&appid='+API_KEY+'&units=imperial')
+      .then(function(resp) {return resp.json()})
+      .then(function(data) {
+        if(data.cod != 400) {
           this.setState({
             searchCoords:{
               lat:data.coord.lat,
@@ -55,19 +56,17 @@ class Body extends Component {
             searchLocation:data,
             current:'search'
           })
-          fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+
-              data.coord.lat+'&lon='+data.coord.lon+'&appid='+API_KEY+'&units=imperial')
-              .then(function(resp) {return resp.json()})
-              .then(function(info) {
-                this.setState({
-                  searchForecast:info.hourly,
-                  searchForecastList:info.daily,
-                  searchOneCall:info
-                })
-              }.bind(this))
-          } else return
-        }.bind(this))
-
+    fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+data.coord.lat+'&lon='+data.coord.lon+'&appid='+API_KEY+'&units=imperial')
+      .then(function(resp) {return resp.json()})
+      .then(function(info) {
+        this.setState({
+          searchForecast:info.hourly,
+          searchForecastList:info.daily,
+          searchOneCall:info
+        })
+      }.bind(this))
+    } else return//timezone favorites button & page
+    }.bind(this))
   }
 
   handleAutoComplete = (city) => {
@@ -109,16 +108,25 @@ class Body extends Component {
 
 
   componentDidMount = () => {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      let lat = (Math.round(position.coords.latitude * 1000000) /1000000);
-      let lng = (Math.round(position.coords.longitude * 1000000) /1000000)
-      this.setState({
-        lat:lat,
-        lng:lng
-      })
-      this.currentWeather(lat,lng);
-      }.bind(this));
+    if(myStorage.getItem('latitude') === null){
+      navigator.geolocation.getCurrentPosition(function(position) {
+        let lat = (Math.round(position.coords.latitude * 1000000) /1000000)
+        let lng = (Math.round(position.coords.longitude * 1000000) /1000000)
+        this.setState({ lat:lat, lng:lng })
+        var location = { lat:lat, lng:lng }
+        myStorage.setItem('latitude',lat)
+        myStorage.setItem('longitude',lng)
+        this.currentWeather(lat,lng)
+      }.bind(this))
+    } else {
+      let lat = myStorage.getItem('latitude')
+      let lng = myStorage.getItem('longitude')
+      this.setState({ lat:lat, lng:lng })
+      this.currentWeather(lat,lng)
     }
+    this.checkToken()
+
+  }
 
   componentDidUpdate = () => {
   }
@@ -135,9 +143,26 @@ class Body extends Component {
     this.setState({ showLogin:false });
   }
 
-
-
-
+  checkToken = () => {
+    let fetchData = {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    }
+    fetch('http://localhost:3001/checkToken', fetchData)
+      .then((res) => res.json())
+      .then((data) => {
+        if(data.message === undefined){
+          this.setState({ user:data, showLogin:false })
+          this.getFavorites()
+        }
+        else {
+          alert(data.message)
+        }
+      })
+  }
 
   login = (usr) => {
     let fetchData = {
@@ -151,22 +176,19 @@ class Body extends Component {
         password:usr.password
       })
     }
-    fetch("http://localhost:3001/user", fetchData)
+    fetch("http://localhost:3001/login", fetchData)
       .then((res) => res.json())
       .then((data) => {
         document.getElementById('login-message').innerHTML = "Login Successful. Redirecting..."
         alert("Login Successful!")
-        this.setState({ user:data[0], showLogin:false })
+        this.setState({ user:data, showLogin:false })
         this.getFavorites()
       })
-
-
   }
 
   logout = () => {
-    this.setState({ user: null })
+    this.setState({ user: null });
   }
-
 
   register = (usr) => {
 
@@ -186,6 +208,7 @@ class Body extends Component {
     fetch("http://localhost:3001/register", fetchData)
       .then((res) => res.json())
       .then((data) => console.log(data))
+      this.setState({ showLogin:false })
   }
 
   addFavorite = () => {
@@ -245,7 +268,6 @@ class Body extends Component {
           })
       }
     }
-
   }
 
   getFavorites = () => {
@@ -261,12 +283,19 @@ class Body extends Component {
       })
     }
     fetch("http://localhost:3001/getFavorites", fetchData)
+      .then(function(res) {
+        if(res.status === 200){
+          return res
+        }
+        else if(res.status !== 200){
+          console.log('No Favorites')
+        }
+      })
       .then((res) => res.json())
       .then((data) => {
-        if(data != null){
-          this.setState({ user:data[0] })
-        }
-        else if (data === null){ console.log('data was null')}
+        let user = this.state.user
+        user.favorites = data
+        this.setState({ user:user })
       })
   }
 
@@ -274,7 +303,7 @@ class Body extends Component {
     let city;
     let name;
     let user = this.state.user.id;
-    if(this.state.current === 'search'){
+    if(this.state.current === 'search') {
       city = this.state.searchLocation.id
       name = this.state.searchLocation.name
     }
@@ -302,10 +331,6 @@ class Body extends Component {
       })
   }
 
-  showFavorites = () => {
-
-  }
-
   renderBody(state){
     let data;
     let forecast;
@@ -313,6 +338,7 @@ class Body extends Component {
     let oneCall;
     let showLogin;
     let user;
+
     switch (state.current){
       case 'search':
         data = state.searchLocation;
@@ -321,7 +347,6 @@ class Body extends Component {
         oneCall = state.searchOneCall;
         showLogin = state.showLogin;
         user = state.user;
-
         break;
       case 'location':
         data = state.location;
@@ -344,6 +369,13 @@ class Body extends Component {
         <Switch>
           <Route path='/favorites'>
             <>
+              <Header
+                showLogin={this.showLogin}
+                logged={user}
+                logout={this.logout}
+                submit={this.showLocation}
+                favorites={this.showFavorites}
+              />
               <div className="BodyTop">
                 <div className="Search">
                   <AutoComplete
@@ -362,10 +394,18 @@ class Body extends Component {
           </Route>
           <Route path='/'>
             <>
+              <Header
+                showLogin={this.showLogin}
+                logged={user}
+                logout={this.logout}
+                submit={this.showLocation}
+                favorites={this.showFavorites}
+              />
               <div className="BodyTop">
                 <div className="Search">
                   <AutoComplete
-                    submit={this.handleAutoComplete} />
+                    submit={this.handleAutoComplete}
+                  />
                 </div>
               </div>
               <div className="BodyBottom">
@@ -408,8 +448,7 @@ class Body extends Component {
   render() {
       return (
         <>
-          <Header showLogin={this.showLogin} logged={this.state.user} logout={this.logout} submit={this.showLocation}/>
-          <div className="Body">{console.log(this.state)}
+          <div className="Body">
             {this.renderBody(this.state)}
           </div>
         </>

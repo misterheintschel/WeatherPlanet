@@ -1,7 +1,5 @@
-
-
 const Pool = require('pg').Pool;
-
+const jwt = require('jsonwebtoken');
 const pool = new Pool({
   user: 'me',
   host: 'localhost',
@@ -9,6 +7,40 @@ const pool = new Pool({
   password: 'password',
   port: 5432
 })
+
+const checkToken = (request, response) => {
+  var cookie = request.headers.cookie
+  if(cookie !== undefined) {
+    var cookieValue = {key:cookie.split("=")[0], value:cookie.split("=")[1]}
+    console.log('cookieValue',cookieValue)
+    try {
+      var decoded = jwt.verify(cookieValue.value, process.env.JWT_SECRET)
+      console.log('decoded', decoded)
+      console.log('created:',new Date(decoded.iat * 1000),'expires:',new Date(decoded.exp * 1000))
+      pool.query(`SELECT id,email,namef,namel
+                  FROM users WHERE id = $1`,[decoded.id], (error, results) => {
+        if(error) {
+          throw error;
+        }
+        var user = results.rows[0]
+        return response
+          .status(200)
+          .json(user)
+      })
+    } catch(err) {
+      return response
+        .status(511)
+        .json({'message':'authentication token invalid'})
+    }
+
+  }
+  else {
+    return response
+      .status(401)
+      .json({'message':'No authentication token discovered'})
+  }
+}
+
 
 const getUser = (request, response) => {
   var email = request.body.email;
@@ -19,7 +51,17 @@ const getUser = (request, response) => {
     if(error) {
       throw error;
     }
-    response.status(200).json(results.rows);
+    var user = results.rows[0]
+    var token = jwt.sign({ id:user.id }, process.env.JWT_SECRET, {
+      expiresIn: process.env.EXPIRES_IN,
+    })
+    return response
+      .cookie('access-token', token, {
+        httpOnly:true,
+        sameSite:'lax',
+      })
+      .status(200)
+      .json(user)
   })
 }
 
@@ -32,17 +74,15 @@ const addFavorite = (request, response) => {
     if(error) {
       throw error;
     }
-    response.status(200).json(results.rows);
+    response.status(201).json(results.rows);
   })
 }
 
 const getFavorites = (request, response) => {
   var user = request.body.user;
-  pool.query(`SELECT u.id,u.email,u.namef,u.namel, jsonb_agg(jsonb_build_object('id',f.weather_api_id,'name',f.city_name)) AS favorites
-              FROM users u, favorites f
-              WHERE u.id = $1
-              AND f.user_id = u.id
-              GROUP BY u.id;`,[user], (error, results) => {
+  pool.query(`SELECT city_name,weather_api_id AS "id"
+	            FROM favorites
+	            WHERE user_id = $1`,[user], (error, results) => {
     if(error) {
       throw error;
     }
@@ -77,12 +117,13 @@ const registerUser = (request, response) => {
     if(error){
       throw error;
     }
-    response.status(200).json(results.rows)
+    response.status(201).json(results.rows)
   })
 }
 
 module.exports = {
   getUser,
+  checkToken,
   registerUser,
   addFavorite,
   getFavorites,

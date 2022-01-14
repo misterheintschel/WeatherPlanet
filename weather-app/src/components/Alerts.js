@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from '../weather-icon.png';
 
 class Alerts extends Component {
   constructor(props){
@@ -22,7 +21,7 @@ class Alerts extends Component {
         timeValue= "" + hours;
       } else if (hours > 12) {
         timeValue= "" + (hours - 12);
-      } else if (hours == 0) {
+      } else if (hours === 0) {
         timeValue= "12";
       }
 
@@ -48,7 +47,7 @@ class Alerts extends Component {
 
 
 
-    if(alerts != undefined){
+    if(alerts !== undefined){
       return (
         alerts.map((element,index) => (
           <div className="Alert" key={index}>

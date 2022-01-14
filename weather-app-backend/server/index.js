@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const db = require('./queries');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -14,15 +17,25 @@ res.setHeader('Access-Control-Allow-Credentials', true);
 next();
 });
 
-app.use(bodyParser.json())
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/*', function (req,res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+app.use(cookieParser());
+
+app.use(bodyParser.json());
 
 app.use(
   bodyParser.urlencoded({
     extended:true
   })
-)
+);
 
-app.post('/user', db.getUser);
+app.post('/login', db.getUser);
+
+app.post('/checkToken', db.checkToken);
 
 app.post('/register', db.registerUser);
 

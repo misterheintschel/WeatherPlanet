@@ -2,9 +2,34 @@
   /* Set neon color */
   --neon-text-color: red;
   --neon-border-color: red;
+	--clickHome-text-color:#0000e9;
 	font-size:14px;
 }
 
+
+@keyframes float {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    transform: translatey(-10px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
+}
+
+@keyframes float2 {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    transform: translatey(-10px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
+}
 
 @keyframes gradient {
 	0% {
@@ -36,7 +61,6 @@
         box-shadow: none;
     }
 }
-
 
 @keyframes flicker2 {
 
@@ -240,6 +264,65 @@
 	top:-2.5rem;
 }
 
+.logo img:hover{
+	cursor:pointer;
+}
+
+.nav-message {
+	height: inherit;
+	max-width:30rem;
+  margin: 1rem;
+	top:1rem;
+  display: grid;
+  place-items: center;
+  font: 1.5rem;
+  background-color: transparent;
+}
+
+.nav-message p {
+  transform: translatey(0px);
+  animation: float 5s ease-in-out infinite;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 3px;
+  font-size: 1rem;
+  color: blue;
+  background-color: beige;
+  padding: 1rem;
+  border-radius: 11px;
+  position: relative;
+  box-shadow: 10px 10px blue;
+  border: 1px solid blue;
+}
+.nav-message p:after {
+  transform: translatey(0px);
+  animation: float2 5s ease-in-out infinite;
+  content: ".";
+  font-weight: bold;
+  -webkit-text-stroke: 0.5px blue;
+  -webkit-text-fill-color: beige;
+  border: 1px solid blue;
+  text-shadow: 4px 4px blue;
+  text-align: left;
+  font-size: 48px;
+  width: 55px;
+  height: 11px;
+  line-height: 5px;
+  border-radius: 11px;
+  background-color: beige;
+  position: absolute;
+  display: block;
+  bottom: -30px;
+  left: 0;
+  box-shadow: 5px 5px blue;
+  z-index: -2;
+}
+
+.nav-message h2 {
+
+}
+
 .nav-buttons{
 	display:flex;
   right:0;
@@ -410,6 +493,68 @@
 }
 
 .favorites-button:hover h2{
+  color:white;
+  -webkit-text-stroke-width:1px;
+  -webkit-text-stroke-color:black;
+}
+
+.welcome-message {
+	text-shadow: 3px 3px 15px white,
+							 -3px -3px 15px white;
+}
+
+.back-to-home-button{
+	margin:2rem;
+  color:white;
+  right:15.5rem;
+  top:.5rem;
+  width:auto;
+  height:6rem;
+  display:flex;
+	justify-content: center;
+  padding:5px;
+}
+
+.back-to-home-button button{
+	font-size:1.5rem;
+  padding:0px;
+  color:white;
+  width:15rem;
+  min-height:3rem;
+  background-image:linear-gradient(black 1%,blue);
+  box-shadow:rgba(0, 0, 0, 0.8) 0 0 .5em;
+  border-width:0;
+  border-radius:2rem;
+}
+
+.back-to-home-button button:hover{
+  cursor:pointer;
+  background-image:linear-gradient(cyan,blue);
+	transform:scale(1.1);
+}
+
+.back-to-home-button h2{
+  color:white;
+  font-size: 2em;
+  -webkit-text-stroke-width:1px;
+  -webkit-text-stroke-color:blue;
+  text-shadow:0 0 5px black;
+}
+
+.back-to-home-button:hover{
+  color:white;
+}
+
+.back-to-home-button:hover button{
+  cursor:pointer;
+
+}
+
+.back-to-home-button:active button{
+  transform:scale(1);
+}
+
+.back-to-home-button:hover h2{
   color:white;
   -webkit-text-stroke-width:1px;
   -webkit-text-stroke-color:black;
@@ -733,7 +878,7 @@
 	position:absolute;
 	width:3em;
 	right:0;
-	top:-2.5em;
+	top:-3em;
 }
 
 #favicon:hover{
@@ -1080,10 +1225,23 @@
   align-items:center;
   margin:1rem;
   flex-grow:1;
-  margin-top:50px;
   min-width:60%;
   border-radius:2rem;
   border-color:transparent;
+}
+
+.FavoritesCard {
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	margin:1rem;
+	text-shadow: 5px 5px 15px white,
+							 -5px -5px 15px white;
+
+}
+
+.favorites-list {
+
 }
 
 
