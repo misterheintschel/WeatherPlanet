@@ -1230,19 +1230,110 @@
   border-color:transparent;
 }
 
+.FavoritesList {
+	display:flex;
+	flex-wrap:wrap;
+	width:100rem;
+	justify-content: center;
+}
+
 .FavoritesCard {
 	display:flex;
-	flex-direction:column;
-	justify-content:center;
-	margin:1rem;
+	min-height:20rem;
+	width:30rem;
+  padding:1rem;
+  margin:1rem;
+  border-radius:2rem;
+  text-shadow:0 0 .2rem white;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 	text-shadow: 5px 5px 15px white,
 							 -5px -5px 15px white;
+}
+
+
+.FavoritesCard:hover{
+	cursor:pointer;
+  box-shadow:
+  0 0 5px #fff,
+  -5px 0 20px #fff,
+  5px 0 20px #fff;
+}
+
+.FavoritesCard:active{
+	transform:scale(.95)
+}
+
+.FavoriteValues {
+	position:relative;
+  width:100%;
+	text-shadow: 3px 3px 10px white,
+							 -3px -3px 10px white;
+	color:black;
+}
+
+#favName {
+	position:absolute;
+	font-size:2rem;
+	left:0;
+	right:0;
+	top:2rem;
+}
+
+#favTemp {
+	position:absolute;
+	font-size:2.5rem;
+	top:40%;
+	left:0;
+	right:0;
 
 }
 
-.favorites-list {
+#favDescription0 {
+	position:absolute;
+	font-size:1.2rem;
+}
+
+#favDescription1 {
+	position:absolute;
+	top:1.2rem;
+	font-size:1.2rem;
+}
+
+#favDescription2 {
+	position:absolute;
+	top:2.4rem;
+	font-size:1.2rem;
+}
+
+#favSunrise {
+	font-size:1.2rem;
+	position:absolute;
+	bottom:1rem;
+	right:.5rem;
+}
+
+#favSunrisePic {
+	width:2rem;
+	position:absolute;
+	bottom:2rem;
+	right:6rem;
+}
+
+#favSunset {
+	font-size:1.2rem;
+	position:absolute;
+	bottom:-1.5rem;
+	right:.5rem;
+}
+
+#favSunsetPic {
+	width:2rem;
+	position:absolute;
+	bottom:-.75rem;
+	right:6rem;
 
 }
+
 
 
 @media screen and (max-width:400px){

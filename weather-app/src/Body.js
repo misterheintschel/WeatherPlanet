@@ -73,6 +73,10 @@ class Body extends Component {
     this.setState({ search:city }, () => {this.searchPull()});
   }
 
+  handleNavigateToFav = (city) => {
+    console.log(city)
+  }
+
   currentWeatherOneCall = (lat,lng) => {
     fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' +
       lat+'&lon='+lng+'&appid='+API_KEY+'&units=imperial')
@@ -386,6 +390,8 @@ class Body extends Component {
                 <div className="Favorites">
                   <Favorites
                     user={user}
+                    iconPath={icons}
+                    nav={this.handleNavigateToFav}
                   />
                 </div>
               </div>
