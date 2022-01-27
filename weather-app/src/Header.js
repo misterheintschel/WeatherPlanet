@@ -81,7 +81,7 @@ class Header extends Component {
         <div className="nav-buttons">
           <div className="login-button">
             <button onClick={(this.props.logged !== undefined && this.props.logged !== null && this.props.logged !== '') ? this.logout : this.showLogin}>
-              {(this.props.logged !== undefined && this.props.logged !== null) ? "Logout" : "Login"}</button>
+              {(this.props.logged !== undefined && this.props.logged != null) ? "Logout" : "Login"}</button>
           </div>
           <div className="location-button">
             <button onClick={this.onPush}>Current Location</button>

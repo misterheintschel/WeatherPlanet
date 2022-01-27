@@ -69,12 +69,36 @@ class Body extends Component {
     }.bind(this))
   }
 
+  loadFavorite = (city) => {
+    fetch('https://api.openweathermap.org/data/2.5/weather?id='+city.id+'&appid='+API_KEY+'&units=imperial')
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({
+          searchCoords:{
+            lat:data.coord.lat,
+            lng:data.coord.lon
+          },
+          searchLocation:data,
+          current:'search'
+        })
+      fetch('https://api.openweathermap.org/data/2.5/onecall?lat='+data.coord.lat+'&lon='+data.coord.lon+'&appid='+API_KEY+'&units=imperial')
+        .then((res) => res.json())
+        .then((info) => {
+          this.setState({
+            searchForecast:info.hourly,
+            searchForecastList:info.daily,
+            searchOneCall:info
+          })
+        })
+      })
+  }
+
   handleAutoComplete = (city) => {
     this.setState({ search:city }, () => {this.searchPull()});
   }
 
   handleNavigateToFav = (city) => {
-    console.log(city)
+    this.loadFavorite(city)
   }
 
   currentWeatherOneCall = (lat,lng) => {
@@ -184,7 +208,6 @@ class Body extends Component {
       .then((res) => res.json())
       .then((data) => {
         document.getElementById('login-message').innerHTML = "Login Successful. Redirecting..."
-        alert("Login Successful!")
         this.setState({ user:data, showLogin:false })
         this.getFavorites()
       })
@@ -266,7 +289,6 @@ class Body extends Component {
         fetch("http://localhost:3001/favorite", fetchData)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data)
             alert(name + " was added as a favorite.")
             this.getFavorites()
           })

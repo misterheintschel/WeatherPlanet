@@ -817,7 +817,7 @@
 }
 #humidity{
   position:absolute;
-  top:7.5rem;
+  top:8.5rem;
   right:.5rem;
   font-size:2rem;
 }
@@ -1218,6 +1218,12 @@
 
 }
 
+.loadingGif{
+	display:flex;
+	flex-direction:column;
+	
+}
+
 .Favorites {
   display:flex;
   position:relative;
@@ -1235,6 +1241,18 @@
 	flex-wrap:wrap;
 	width:100rem;
 	justify-content: center;
+}
+
+.NoFavoritesCard {
+	display:flex;
+	min-height:20rem;
+	width:30rem;
+  padding:1rem;
+  margin:1rem;
+  text-shadow:0 0 .2rem white;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+	text-shadow: 5px 5px 15px white,
+							 -5px -5px 15px white;
 }
 
 .FavoritesCard {

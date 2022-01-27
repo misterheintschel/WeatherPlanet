@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-
+import loadingGif from '../resources/weather-icons/loading.gif';
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const WelcomeMessage = (props) => {
@@ -24,7 +24,7 @@ const WelcomeMessage = (props) => {
     return (
       <>
         <div className="welcome-message">
-          <h1>Hello! Welcome, {props.user.namef}, and thank you for using Weather Planet!</h1>
+          <h1>{props.user.namef + "'s"} Favorites</h1>
         </div>
       </>
     )
@@ -32,7 +32,6 @@ const WelcomeMessage = (props) => {
 };
 
 const FavoriteList = (props) => {
-
   const backToHome = () => {
     props.history.push('/')
   }
@@ -59,23 +58,35 @@ const FavoriteList = (props) => {
     }
   }
 
-  const navigateToFav = (city) => {
-    console.log('success')
+  const navigateToFav = (data) => {
+    props.nav(data)
+    backToHome()
   }
 
   const moreThanZeroFavorites = favorites.length > 0;
+
+  if(props.loading){
+    return (
+      <>
+        <div className="loadingGif">
+        <img id="loadingGif" src={loadingGif} alt="Loading..."></img>
+        <h2>Loading...</h2>
+        </div>
+      </>
+    )
+  }
   return (
     <>
       {moreThanZeroFavorites ? props.favorites.map((element,index) => (
-            <div className="FavoritesCard" key={index} onClick={navigateToFav()} style={{
+            <div className="FavoritesCard" key={index} onClick={() => {navigateToFav(element)}} style={{
                                                         backgroundImage: `url(${findImage(element.weather[0].id + element.weather[0].icon[2])})`,
                                                         backgroundPosition: 'center',
                                                         backgroundSize: 'cover',
                                                         backgroundRepeat: 'no-repeat'}}>
-              <div className="FavoriteValues">{console.log(element)}
+              <div className="FavoriteValues">
                 <p id="favName">{element.name}</p>
                 <p id="favTemp">{Math.round(element.main.temp)}&deg;</p>
-                {element.weather.map((element,index) => (<p id={'favDescription'+index}>{capitalizeFirst(element.description)} </p>))}
+                {element.weather.map((element,index) => (<p id={'favDescription'+index} key={index}>{capitalizeFirst(element.description)} </p>))}
                 <p id="favSunrise">{new Date(element.sys.sunrise * 1000).toLocaleString([], { hour:'numeric',minute:'numeric' })}</p>
                 <img alt="loading..." id="favSunrisePic" src={findImage('sunrise')}></img>
                 <p id="favSunset">{new Date(element.sys.sunset * 1000).toLocaleString([], { hour:'numeric',minute:'numeric' })}</p>
@@ -84,7 +95,7 @@ const FavoriteList = (props) => {
             </div>
         ))
     :
-      <div className="FavoritesCard">
+      <div className="NoFavoritesCard">
         <h1>You do not currently have any favorites</h1>
       </div>
     }
@@ -94,6 +105,7 @@ const FavoriteList = (props) => {
 
 const Favorites = (props) => {
   const [weatherData, setWeatherData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const createFavorites = () => {
@@ -115,17 +127,26 @@ const Favorites = (props) => {
               .then((res) => res.json())
               .then((data) => {
                   setWeatherData(data.list);
-            })
+              })
+              .then(() => { setLoading(false) })
             return
           }
-          else return setWeatherData([])
-
+          else return setWeatherData([]);
         }
         else return setWeatherData([]);
       }
       else return setWeatherData([]);
     };
-    createFavorites();
+    setLoading(true)
+    try{
+      createFavorites();
+    }
+    catch(err){
+      console.log(err)
+    }
+    finally{
+    }
+
 
   }, [props]);
 
@@ -135,7 +156,7 @@ const Favorites = (props) => {
         <WelcomeMessage user={props.user} history={props.history}/>
       </div>
       <div className="FavoritesList">
-        <FavoriteList user={props.user} favorites={weatherData} history={props.history} iconPath={props.iconPath} nav={props.nav} />
+        <FavoriteList user={props.user} favorites={weatherData} loading={loading} history={props.history} iconPath={props.iconPath} nav={props.nav} />
       </div>
     </>
   )
