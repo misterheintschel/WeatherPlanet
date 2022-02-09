@@ -5,7 +5,7 @@ const db = require('./queries');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 80;
 
 var str = JSON.stringify()
 
