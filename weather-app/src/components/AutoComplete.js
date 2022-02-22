@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-var cities = require('../resources/city.list.json');
 
 export class AutoComplete extends Component {
   constructor(props){
     super(props);
     this.state = {
-      activeSuggestion: 0,
       filteredSuggestions: [],
       showSuggestions: false,
       userInput: ''
@@ -14,39 +12,75 @@ export class AutoComplete extends Component {
 
   onChange = (val) => {
     let list = [];
-    this.setState({
-      userInput:val.currentTarget.value
-    })
-    for (let i = 0; i <cities.length; i++){
-      if (this.state.userInput.length >= 2){
-        if (cities[i].name.toLowerCase().includes(this.state.userInput.toLowerCase())) {
-          list.push({name:cities[i].name, state:cities[i].state, country:cities[i].country, key:cities[i].id});
-        }
-      }
-
+    let input = val.currentTarget.value
+    let fetchData = {
+      method: "post",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        search:input
+      })
     }
     this.setState({
-      showSuggestions:true,
-      filteredSuggestions: list
+      userInput:input
     })
+    if(input.length > 2){
+      fetch("/citySearch", fetchData)
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({
+          showSuggestions:true,
+          filteredSuggestions: data
+        })
+      })
+    }
+  }
 
+  onKeyDown = (event) => {
+    if(event.key === 'Enter') {
+      this.onSubmit()
+      this.setState({
+        filteredSuggestions:[],
+        showSuggestions:false,
+      })
+    }
   }
 
   onClick = (val) => {
     this.setState({
-      activeSuggestion: 0,
       filteredSuggestions:[],
       showSuggestions:false,
       userInput: val.currentTarget.innerText
     });
     this.props.submit(val.currentTarget.innerText);
-    //this.props.submit(this.state.userInput);
   }
 
   onSubmit = (event) => {
     this.props.submit(this.state.userInput);
   }
 
+  handleClickOutside = (event) => {
+
+    if(this.node.contains(event.target)) {
+      return;
+    }
+    else {
+      this.setState({
+        filteredSuggestions: [],
+        showSuggestions:false
+      })
+    }
+  }
+
+  componentDidMount = () => {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount = () => {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
 
 
   render(){
@@ -56,7 +90,6 @@ export class AutoComplete extends Component {
       onKeyDown,
       onSubmit,
       state: {
-        activeSuggestion,
         filteredSuggestions,
         showSuggestions,
         userInput
@@ -70,8 +103,8 @@ export class AutoComplete extends Component {
             <ul className="suggestions">
               {filteredSuggestions.slice(0,50).map((suggestion, index) => {
                 return (
-                  <li className="suggestion" key={suggestion.key} onClick={onClick}>
-                    {suggestion.name +', '+suggestion.state + ' ' + suggestion.country}
+                  <li className="suggestion" key={index} onClick={onClick}>
+                    {suggestion.name + ', '+suggestion.state + ' ' + suggestion.country}
                   </li>
                 );
               })}
@@ -86,7 +119,7 @@ export class AutoComplete extends Component {
         }
       }
     return (
-      <div className="Search">
+      <div className="Search" ref={node => this.node = node}>
         <input
           type="text"
           id="searchInput"

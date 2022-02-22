@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import logo from '../weather-icon.png';
-import close from '../resources/weather-icons/x.png';
-import back from '../resources/weather-icons/back.png';
+const REACT_APP_IMAGE_URL = process.env.REACT_APP_IMAGE_URL;
+
+const close = REACT_APP_IMAGE_URL+'x.png';
+const back = REACT_APP_IMAGE_URL+'back.png';
 
 class Login extends Component {
   constructor(props){

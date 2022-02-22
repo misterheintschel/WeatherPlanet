@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import loadingGif from '../resources/weather-icons/loading.gif';
 const API_KEY = process.env.REACT_APP_API_KEY;
+const REACT_APP_IMAGE_URL = process.env.REACT_APP_IMAGE_URL;
+const loadingGif = REACT_APP_IMAGE_URL+'loading.gif';
 
 const WelcomeMessage = (props) => {
   const backToHome = () => {

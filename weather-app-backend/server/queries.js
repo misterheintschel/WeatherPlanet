@@ -1,11 +1,11 @@
 const Pool = require('pg').Pool;
 const jwt = require('jsonwebtoken');
 const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT
 })
 
 const checkToken = (request, response) => {
@@ -63,6 +63,22 @@ const getUser = (request, response) => {
       .status(200)
       .json(user)
   })
+}
+
+const citySearch = (request, response) => {
+  var search = request.body.search
+  console.log(search)
+  pool.query(`SELECT * FROM cities
+              WHERE name ILIKE $1 || '%'
+              ORDER BY CASE WHEN country = 'US'
+              THEN 1 ELSE 2 END, country`,[search], (error, results) => {
+    if(error) {
+      throw error;
+    }
+    console.log(results.rows)
+    response.status(200).json(results.rows);
+  })
+
 }
 
 const addFavorite = (request, response) => {
@@ -125,6 +141,7 @@ module.exports = {
   getUser,
   checkToken,
   registerUser,
+  citySearch,
   addFavorite,
   getFavorites,
   removeFavorite

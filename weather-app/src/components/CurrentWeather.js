@@ -1,7 +1,10 @@
 import React from 'react';
-import pre from '../resources/weather-icons/favorite-pre.png';
-import post from '../resources/weather-icons/favorite-post.png';
-import fav from '../resources/weather-icons/favorite-hover.gif';
+const REACT_APP_IMAGE_URL = process.env.REACT_APP_IMAGE_URL;
+const pre = REACT_APP_IMAGE_URL+'favorite-pre.png';
+const post = REACT_APP_IMAGE_URL+'favorite-post.png';
+const fav = REACT_APP_IMAGE_URL+'favorite-hover.gif';
+
+
 
 class CurrentWeather extends React.Component {
   getDayNumber = (dayInput) => {

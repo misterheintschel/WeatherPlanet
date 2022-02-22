@@ -134,19 +134,36 @@ class Body extends Component {
       })
   }
 
+  setPosition = () => {
+
+  }
+
 
   componentDidMount = () => {
     if(myStorage.getItem('latitude') === null){
-      navigator.geolocation.getCurrentPosition(function(position) {
-        let lat = (Math.round(position.coords.latitude * 1000000) /1000000)
-        let lng = (Math.round(position.coords.longitude * 1000000) /1000000)
-        this.setState({ lat:lat, lng:lng })
-        var location = { lat:lat, lng:lng }
-        myStorage.setItem('latitude',lat)
-        myStorage.setItem('longitude',lng)
-        this.currentWeather(lat,lng)
-      }.bind(this))
-    } else {
+      if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            let lat = (Math.round(position.coords.latitude * 1000000) / 1000000)
+            let lng = (Math.round(position.coords.longitude * 1000000) / 1000000)
+            this.setState({ lat:lat, lng:lng })
+            var location = { lat:lat, lng:lng }
+            myStorage.setItem('latitude',lat)
+            myStorage.setItem('longitude',lng)
+            this.currentWeather(lat,lng)
+          }.bind(this),
+          function(error) {
+            if(error.code == 1){
+            alert('Your location information was not obtained due to a Location Sharing Setting')
+            }
+          },
+          { timeout: 1000 })
+      }
+      else {
+        console.log('Your browser does not support geolocation')
+      }
+    }
+    else {
       let lat = myStorage.getItem('latitude')
       let lng = myStorage.getItem('longitude')
       this.setState({ lat:lat, lng:lng })
@@ -179,7 +196,7 @@ class Body extends Component {
         'Content-Type': 'application/json'
       },
     }
-    fetch('http://localhost:3001/checkToken', fetchData)
+    fetch('/checkToken', fetchData)
       .then((res) => res.json())
       .then((data) => {
         if(data.message === undefined){
@@ -187,7 +204,7 @@ class Body extends Component {
           this.getFavorites()
         }
         else {
-          alert(data.message)
+          return
         }
       })
   }
@@ -204,7 +221,7 @@ class Body extends Component {
         password:usr.password
       })
     }
-    fetch("http://localhost:3001/login", fetchData)
+    fetch("/login", fetchData)
       .then((res) => res.json())
       .then((data) => {
         document.getElementById('login-message').innerHTML = "Login Successful. Redirecting..."
@@ -232,10 +249,13 @@ class Body extends Component {
         password:usr.password
       })
     }
-    fetch("http://localhost:3001/register", fetchData)
+    fetch("/register", fetchData)
       .then((res) => res.json())
-      .then((data) => console.log(data))
-      this.setState({ showLogin:false })
+      .then((data) => {
+        alert('Account for ' + data[0].namef + ' ' + data[0].namel + ' with login email ' + data[0].email + ' created.')
+        this.setState({ showLogin:false })
+      })
+
   }
 
   addFavorite = () => {
@@ -260,11 +280,9 @@ class Body extends Component {
             user:user
           })
         }
-        fetch("http://localhost:3001/favorite", fetchData)
+        fetch("/favorite", fetchData)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data)
-            alert(name + " was added as a favorite.")
             this.getFavorites()
           })
       }
@@ -286,10 +304,9 @@ class Body extends Component {
             user:user
           })
         }
-        fetch("http://localhost:3001/favorite", fetchData)
+        fetch("/favorite", fetchData)
           .then((res) => res.json())
           .then((data) => {
-            alert(name + " was added as a favorite.")
             this.getFavorites()
           })
       }
@@ -308,13 +325,13 @@ class Body extends Component {
         user:user
       })
     }
-    fetch("http://localhost:3001/getFavorites", fetchData)
+    fetch("/getFavorites", fetchData)
       .then(function(res) {
         if(res.status === 200){
           return res
         }
         else if(res.status !== 200){
-          console.log('No Favorites')
+          return
         }
       })
       .then((res) => res.json())
@@ -348,11 +365,9 @@ class Body extends Component {
         city:city
       })
     }
-    fetch("http://localhost:3001/removeFavorite", fetchData)
+    fetch("/removeFavorite", fetchData)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        alert(name + " was removed as a favorite.")
         this.getFavorites()
       })
   }
