@@ -61,6 +61,7 @@ class Login extends Component {
   }
 
   submitRegister = (e) => {
+    e.preventDefault();
     let reg =
       {
         first:e.target.form[0].value,
@@ -68,10 +69,12 @@ class Login extends Component {
         email:e.target.form[2].value,
         password:e.target.form[3].value
       };
-    if(reg.first === '') {
-
+    if(reg.first === '' || reg.last === '' || reg.email === '' || reg.password === '') {
+      alert('All fields required!')
     }
-    this.props.register(reg)
+    else{
+      this.props.register(reg)
+    }
   }
 
   displayForm = (state) => {
@@ -130,7 +133,7 @@ class Login extends Component {
                 <label>Email:  </label><input type="text" name="email" required></input><br/>
                 <label>Password:  </label><input type="password" name="password" required></input><br/>
                 <p id="registration-message"></p>
-                <button id="register-button" onClick={this.submitRegister}>Register</button>
+                <button id="register-button" onClick={this.submitRegister} onSubmit={this.submitRegister}>Register</button>
               </div>
             </form>
           </div>

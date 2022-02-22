@@ -52,10 +52,21 @@ const getUser = (request, response) => {
       throw error;
     }
     var user = results.rows[0]
-    var token = jwt.sign({ id:user.id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.EXPIRES_IN,
-    })
+    if(user !== null && !== undefined && !== '') {
+      var token = jwt.sign({ id:user.id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.EXPIRES_IN,
+      })
+
+
     return response
+      .cookie('access-token', token, {
+        httpOnly:true,
+        sameSite:'lax',
+      })
+      .status(200)
+      .json(user)
+    }
+    else return response
       .cookie('access-token', token, {
         httpOnly:true,
         sameSite:'lax',

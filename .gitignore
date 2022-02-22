@@ -11,7 +11,7 @@ d# See https://help.github.com/articles/ignoring-files/ for more about ignoring 
 
 # production
 /weather-app-backend/server/build
-/weather-app/build
+/weather-app/build*
 
 
 # misc

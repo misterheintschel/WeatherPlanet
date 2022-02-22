@@ -252,7 +252,7 @@ class Body extends Component {
     fetch("/register", fetchData)
       .then((res) => res.json())
       .then((data) => {
-        alert('Account for ' + data[0].namef + ' ' + data[0].namel + ' with login email ' + data[0].email + ' created.')
+        alert('Account for ' + data[0].namef + ' ' + data[0].namel + ' with login email: ' + data[0].email + ' created.')
         this.setState({ showLogin:false })
       })
 

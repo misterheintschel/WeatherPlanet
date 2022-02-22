@@ -1542,6 +1542,42 @@
 		font-size:3rem;
 	}
 
+  .FavoritesCard {
+    width:15rem;
+    height:18rem;
+  }
+
+  .Favorites {
+    margin-top:4.5rem;
+  }
+
+  #favName {
+    font-size:1.8rem;
+  }
+
+  #favTemp {
+  }
+
+  #favDescription0 {
+  }
+
+  #favDescription1 {
+  }
+
+  #favDescription2 {
+  }
+
+  #favSunrise {
+  }
+
+  #favSunrisePic {
+  }
+
+  #favSunset {
+  }
+
+  #favSunsetPic {
+  }
 
 
 }
